@@ -1,0 +1,15 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 08-22-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<apex:page controller="GRAXEmbedSetup" lightningStylesheets="true" >
+  <body class="slds-scope" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">   
+    <apex:slds />
+    <script type="text/javascript" id="hs-script-loader" async="true" defer="true" src="//js.hs-scripts.com/6638895.js"></script>
+    <iframe height="900px" id="GRAXEmbedDocumentation" name="GRAXEmbedDocumentation" src="https://documentation.grax.io/docs" width="100%" style="border:none;" >
+    </iframe>
+  </body>  
+</apex:page>

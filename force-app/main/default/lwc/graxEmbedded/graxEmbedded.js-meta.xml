@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+  <apiVersion>52.0</apiVersion>
+  <masterLabel>GRAX Embedded</masterLabel>
+  <isExposed>true</isExposed>
+  <targets>
+    <target>lightning__RecordPage</target>
+  </targets>
+  <targetConfigs>
+    <targetConfig targets="lightning__RecordPage">
+      <property description="Related object, e.g. Case" label="Related Object" name="sObject" required="true" type="String" />
+      <property description="CSV of object fields, e.g. Name,Number" label="Related Object Fields" name="fields" required="true" type="String" default="Id,Name,CreatedDate,LastModifiedDate"/>
+      <property description="Override Title" label="Override Title" name="title" required="false" type="String" default="" />
+      <property description="Choose Data" label="Data Set Selection" name="setSelection" required="true" type="String" datasource="All Data,Archived Data,Deleted Data,Archived + Deleted Data" default="All Data"/>
+
+      <property description="iFrame Size" label="iFrame px Size" name="iFrameSize" required="true" type="Integer" default="475" />
+      <property description="Records Per Page" label="Records Per Page" name="recordsPerPage" required="true" type="Integer" default="5" />
+      
+      <property description="CAUTION: Ignore Salesforce Record Level Security and shows ALL GRAX data. Use this if an object is deleted from Salesforce and is in GRAX." label="Do NOT Enforce Security or Salesforce Object Deleted" name="ignoreRecordLevelSecurity" required="false" type="Boolean" default="false"/>
+      <property description="Child Levels. Refer to documentation before changing this." label="Child Level" name="childLevels" required="true" type="Integer" default="1" />
+
+      <property description="Additional Parameters if needed refer to documentation." label="Additional Parameters" name="additionalParams" required="false" type="String" default="" />
+    </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>
