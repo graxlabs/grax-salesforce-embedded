@@ -22,11 +22,24 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
    cd GRAX-Salesforce-Embedded
    ```
 
-4. Pushing GRAX To Sandbox OR Scratch Org
+4. Login to Salesforce
+
+    ```
+       sfdx auth:web:login -a GRAXDev -r https://test.salesforce.com
+    ```   
+
+4. Enable "Set Audit Fields upon Record Creation" and "Update Records with Inactive Owners" User Permissions
+    If you do not do this pushing the permission sets will fail.
+
+    ```
+    sfdx force:org:open -u GRAXDev -p /lightning/setup/UserInterfaceUI/home
+    ```
+    ![GRAX EnableAudit Fields](./Images/EnableAuditFields.png)
+
+5. Pushing GRAX To Sandbox OR Scratch Org
    - Pushing to a Sandbox - Recommended for testing
 
        ```
-       sfdx auth:web:login -a GRAXDev -r https://test.salesforce.com
        sfdx force:source:deploy -p force-app/main/default -u GRAXDev
        ```
    - Create & Push to Scratch Org - Please refer to how to utilize [Salesforce Scratch Orgs](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs.htm)
