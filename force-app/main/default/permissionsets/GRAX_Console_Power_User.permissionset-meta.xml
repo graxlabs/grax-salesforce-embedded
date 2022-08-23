@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-	<label>GRAX Console Standard User Permission</label>
-	<description>Grants users access to the GRAX Console Standard User Permission</description>
+	<label>GRAX Console Power User Permission</label>
+	<description>Grants users access to the GRAX Console Power User Permission</description>
 	<applicationVisibilities>
 		<application>GRAXEmbedded</application>
 		<visible>true</visible>
