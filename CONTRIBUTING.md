@@ -1,6 +1,6 @@
 # Contribution
 
-Please read [GRAX's contribution guidelines](https://github.com/graxinc/GRAX-Salesforce-Embedded/GENERAL-CONTRIBUTING.md).
+Please read [GRAX's contribution guidelines](https://github.com/graxinc/grax-salesforce-embedded/GENERAL-CONTRIBUTING.md).
 
 ## Documentation
 
