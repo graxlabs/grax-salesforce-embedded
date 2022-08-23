@@ -20,8 +20,8 @@
 
 ## Salesforce Deployment Choices
 
-- Choice 1 - [No Installation (Config Only)](./docs/NO-INSTALLATION.md) - Quick w/ Least Burden
-- Choice 2 - [GRAX for Salesforce Embedded](./docs/README.md#step-2--grax-ui-for-salesforce) - Open & Extensible
+- Choice 1 - [GRAX for Salesforce Embedded](./docs/README.md#step-2--grax-ui-for-salesforce) - Open, Extensible, and Best User Experience
+- Choice 2 - [No Installation (Config Only)](./docs/NO-INSTALLATION.md) - Quickest with Least Burden, No LWC
 
 ## Support + Feedback
 

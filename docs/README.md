@@ -66,7 +66,7 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
     ```
     ![GRAX CSP](./Images/CSP-Trusted-Sites.png)
 
-3. Permission Set Assignments - Add All GRAX Permission Sets (to Admin User)
+3. Permission Set Assignments - Add All GRAX Permission Sets (to Admin User). Ensure "GRAX_Integration_Running_User" permission set is assigned to the user GRAX is running as.
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/setup/ManageUsers/home
     ```    
