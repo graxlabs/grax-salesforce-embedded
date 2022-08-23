@@ -31,7 +31,7 @@ sfdx force:source:push -u GRAXDev
 ```
 
 ### Deploying to Non Scratch Orgs
-To deploy GRAX to NON scratch orgs below are sample deployments. This will add the GRAX-Salesforce-Embedded into your Sandbox. You would then use your standard testing, deployment, patching, and release management to push GRAX-Salesforce-Embedded out.
+To deploy GRAX to NON scratch orgs below are sample deployments. This will add the grax-salesforce-embedded into your Sandbox. You would then use your standard testing, deployment, patching, and release management to push grax-salesforce-embedded out.
 ```
 sfdx force:source:deploy -p force-app/main/default -u grax-testdrive
 sfdx force:source:deploy -p force-app/main/default -u grax-completedemo

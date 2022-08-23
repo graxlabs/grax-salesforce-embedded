@@ -18,8 +18,8 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
 
 3. Clone Repo 
    ```
-   git clone https://github.com/graxinc/GRAX-Salesforce-Embedded.git
-   cd GRAX-Salesforce-Embedded
+   git clone https://github.com/graxinc/grax-salesforce-embedded.git
+   cd grax-salesforce-embedded
    ```
 
 4. Login to Salesforce
