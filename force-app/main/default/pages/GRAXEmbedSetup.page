@@ -16,11 +16,6 @@
 			  <ul class="slds-tabs_scoped__nav" role="tablist" id="tabs">
 				<apex:outputPanel layout="none" rendered="{!hasConfigurationAdminPermission}">
 				  <li class="slds-tabs_scoped__item" title="Configuration" role="presentation">
-						<a class="slds-tabs_scoped__link" onclick="javascript:document.getElementById('graxSetup').src='{!selectedGraxAppURL}/web/backup?embedded=true&autologin=true';" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-configuration" id="tab-configuration__item">
-						  Auto Backup (N)
-						</a>
-			      </li>
-				  <li class="slds-tabs_scoped__item" title="Configuration" role="presentation">
 					<a class="slds-tabs_scoped__link" href="javascript:window.open('{!selectedGraxAppURL}/web/backup?autologin=true','_blank');" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-configuration" id="tab-configuration__item">
 					  Auto Backup
 					</a>
