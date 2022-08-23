@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GRAXApiUrl__c</fullName>
+    <description>GRAX Api URL</description>
+    <externalId>false</externalId>
+    <inlineHelpText>GRAX Api URL</inlineHelpText>
+    <label>API Url</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

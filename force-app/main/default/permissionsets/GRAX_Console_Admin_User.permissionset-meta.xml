@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+	<label>GRAX Console ADMIN Permission</label>
+	<description>Grants users ADMIN permission(s) in the GRAX Console</description>
+	<license>Salesforce</license>
+	<applicationVisibilities>
+		<application>GRAXEmbedded</application>
+		<visible>true</visible>
+	</applicationVisibilities>
+	<pageAccesses>
+		<apexPage>GRAXEmbedSetup</apexPage>
+		<enabled>true</enabled>
+	</pageAccesses>
+	<pageAccesses>
+		<apexPage>GRAXEmbedDocumentation</apexPage>
+		<enabled>true</enabled>
+	</pageAccesses>
+	<tabSettings>
+        <tab>GRAXEmbedSetup</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+	<tabSettings>
+        <tab>GRAXEmbedDocumentation</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+	<objectPermissions>
+		<object>GRAXEmbedConfiguration__C</object>
+		<allowCreate>true</allowCreate>
+		<allowDelete>true</allowDelete>
+		<allowEdit>true</allowEdit>
+		<allowRead>true</allowRead>
+		<modifyAllRecords>true</modifyAllRecords>
+		<viewAllRecords>true</viewAllRecords>
+	</objectPermissions>
+</PermissionSet>
