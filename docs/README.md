@@ -44,14 +44,22 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
     ```
     ![GRAX Configuration](./Images/CustomSettings.png)
 
-2. Permission Set Assignments - Add All GRAX Permission Sets (to Admin User)
+2. Add CSP Trusted Site - Click "New Trusted Site"
+        Name:               GRAX
+        Trusted Site URL:   https://grax-application-url.aws.azure.gcp.grax.com (Sample)
+
+    ```
+    sfdx force:org:open -u GRAXDev -p /lightning/setup/SecurityCspTrustedSite/home
+    ```
+    ![GRAX CSP](./Images/CSP-Trusted-Sites.png)
+
+3. Permission Set Assignments - Add All GRAX Permission Sets (to Admin User)
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/setup/ManageUsers/home
     ```    
     ![GRAX Permission Sets](./Images/GRAX-Permission-Sets.png)
 
-
-3. Ready to go - Auto Backup >> Enabled
+4. Ready to go - Auto Backup >> Enabled
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/n/GRAXEmbedSetup
     ```   
