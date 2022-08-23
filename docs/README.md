@@ -44,8 +44,6 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
     ```
     ![GRAX Configuration](./Images/CustomSettings.png)
 
-    ![GRAX Configuration](./Images/GRAX-Configuration-Settings.png)
-
 2. Permission Set Assignments - Add All GRAX Permission Sets (to Admin User)
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/setup/ManageUsers/home
@@ -55,6 +53,6 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
 
 3. Ready to go - Turn Auto Backup On 
     ```
-    sfdx force:org:open -u GRAXDev -p /lightning/n/Demo_Instructions
+    sfdx force:org:open -u GRAXDev -p /lightning/n/GRAXEmbedSetup
     ```    
 
