@@ -51,8 +51,11 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
     ![GRAX Permission Sets](./Images/GRAX-Permission-Sets.png)
 
 
-3. Ready to go - Turn Auto Backup On 
+3. Ready to go - Auto Backup >> Enabled
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/n/GRAXEmbedSetup
-    ```    
+    ```   
+    Cl
+ 
+    ![Auto Backup On](./Images/AutoBackup-on.png)
 
