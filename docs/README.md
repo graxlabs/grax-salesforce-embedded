@@ -75,8 +75,6 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
 4. Ready to go - Auto Backup >> Enabled
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/n/GRAXEmbedSetup
-    ```   
-    Cl
- 
+    ```    
     ![Auto Backup On](./Images/AutoBackup-on.png)
 
