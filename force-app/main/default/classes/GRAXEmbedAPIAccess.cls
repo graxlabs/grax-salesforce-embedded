@@ -8,10 +8,13 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 	private GRAXEmbedSettings gx = new GRAXEmbedSettings();
 	private String externalAPIEndpointStatic;
 
-    public String loadData(String objName, String recordId){
+    public String loadData(String objName, String recordId, String ChildObject){
         String returnValue = '';
         String responseBody = '';
 		String fullAPIPath = gx.AppURL + '/app/objects/' + objName + '/records/' + recordId + '/latest/graph?includeFields=true&level=1';
+        if (ChildObject!=null && ChildObject!=''){
+            fullAPIPath += '&childObject=' + ChildObject;
+        }
 		system.debug('GRAX_DEBUG: fullAPIPath:' + fullAPIPath);
         if (!Test.isRunningTest()){
             try{

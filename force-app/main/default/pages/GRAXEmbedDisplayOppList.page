@@ -1,0 +1,34 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-02-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<apex:page standardController="Account" extensions="GRAXEmbedDisplayOppList">
+  <apex:form >
+      <apex:repeat value="{!graxUIHelper.childObjects}" var="childObject" id="theRepeat">
+      <apex:pageBlock title="{!childObject} ({!numberofRecords} Records)" id="pgcf" rendered="{!graxUIHelper.childObjectsFieldDef != null && childObject=='Opportunity'}">
+      <apex:pageBlockTable value="{!graxUIHelper.childObjectsFieldDef[childObject]}" var="childObjectList">
+          <apex:column headerValue="{!childObject} Id">
+              <apex:outputLink value="{!'/' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+                {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}
+              </apex:outputLink>
+              <apex:outputLink value="{!graxUIHelper.graxSettings.webURL + '/search?embed=true&autologin=true&id=' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+                [GRAX]
+              </apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Name">
+              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
+            </apex:column>
+            <apex:column headerValue="Amount">
+              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Amount'].fValue}
+            </apex:column>
+            <apex:column headerValue="Close Date">
+              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['CloseDate'].fValue}
+            </apex:column>
+        </apex:pageBlockTable>
+      </apex:pageBlock>
+      </apex:repeat>
+   </apex:form>
+  </apex:page>
