@@ -8,7 +8,6 @@
 <apex:page controller="GRAXEmbedDisplayRecord">
 <apex:form >
   <apex:pageBlock title="{!Selectedobject}" id="c">
-    <!-- This default object display render all fields -->
     <apex:pageBlockTable value="{!fieldDefinitions}" var="d" rendered="{!fieldDefinitions != null}">
       <apex:column headerValue="Field Label">
         {!fieldDefinitions[d].fLabel}
@@ -35,7 +34,7 @@
   
   <apex:repeat value="{!childObjects}" var="childObject" id="theRepeat">
     <apex:pageBlock title="{!childObject}" id="pgcf">
-      <!-- Opportunity List Display (Sample with how you override) -->
+      <!-- Opportunity Display -->
       <apex:pageBlockTable value="{!childObjectsFieldDef[childObject]}" var="childObjectList" rendered="{!childObjectsFieldDef != null && childObject=='Opportunity'}">
         <apex:column headerValue="{!childObject} Id">
             <apex:outputLink value="{!'/' + childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
@@ -48,12 +47,15 @@
           <apex:column headerValue="Name">
             {!childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
           </apex:column>
+          <apex:column headerValue="Amount">
+            {!childObjectsFieldDef[childObject][childObjectList]['Amount'].fValue}
+          </apex:column>
           <apex:column headerValue="Close Date">
             {!childObjectsFieldDef[childObject][childObjectList]['CloseDate'].fValue}
           </apex:column>
       </apex:pageBlockTable>
 
-      <!-- This displays all child objects / default list display -->
+      <!-- Default List Display-->
       <apex:pageBlockTable value="{!childObjectsFieldDef[childObject]}" var="childObjectList" rendered="{!childObjectsFieldDef != null && childObject!='Opportunity'}">
           <apex:column headerValue="{!childObject} Id">
             <apex:outputLink value="{!'/' + childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
