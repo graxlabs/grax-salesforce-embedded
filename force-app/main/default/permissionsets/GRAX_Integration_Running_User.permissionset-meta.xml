@@ -13,19 +13,27 @@
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
-		<name>ModifyAllData</name>
-	</userPermissions>
-	<userPermissions>
-		<enabled>true</enabled>
 		<name>CreateAuditFields</name>
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
+<<<<<<< Updated upstream
 		<name>ViewDataLeakageEvents</name>
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
 		<name>ViewEventLogFiles</name>
+=======
+		<name>ViewEventLogFiles</name>
+	</userPermissions>
+	<userPermissions>
+		<enabled>true</enabled>
+		<name>ModifyAllData</name>
+	</userPermissions>
+	<userPermissions>
+		<enabled>true</enabled>
+		<name>ViewDataLeakageEvents</name>
+>>>>>>> Stashed changes
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>

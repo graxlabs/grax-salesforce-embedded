@@ -5,11 +5,11 @@ public with sharing class GRAXEmbedSetup {
     public GRAXEmbedSetup() {
         hasConfigurationAdminPermission = false;
         GRAXEmbedSettings settings = new GRAXEmbedSettings();
-        if (settings.IsConfigured()){
-            this.hasConfigurationAdminPermission = settings.IsAdminUser();
-            iFrameSrc = settings.AppURL + '/web?autologin=true';
+        if (settings.isConfigured()){
+            this.hasConfigurationAdminPermission = settings.isAdminUser();
+            iFrameSrc = settings.appURL + '/web?autologin=true';
             iFrameSrc = 'https://documentation.grax.io/docs';
-            selectedGraxAppURL = settings.AppURL;
+            selectedGraxAppURL = settings.appURL;
         }  
     }   
 }

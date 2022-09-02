@@ -1,0 +1,76 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-02-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<apex:page controller="GRAXEmbedDisplayRecord">
+<apex:form >
+  <apex:pageBlock title="{!Selectedobject}" id="c">
+    <!-- This default object display render all fields -->
+    <apex:pageBlockTable value="{!fieldDefinitions}" var="d" rendered="{!fieldDefinitions != null}">
+      <apex:column headerValue="Field Label">
+        {!fieldDefinitions[d].fLabel}
+      </apex:column>
+      <apex:column headerValue="Field Value">
+        <apex:outputText value="{!fieldDefinitions[d].fValue}" rendered="{!((fieldDefinitions[d].fType=='STRING' || fieldDefinitions[d].fType=='TEXTAREA' || fieldDefinitions[d].fType=='PICKLIST') && fieldDefinitions[d].fValue!='' && fieldDefinitions[d].fValue!=null) }">
+        </apex:outputText>
+        <apex:outputLink value="{!'/' + fieldDefinitions[d].fValue}" rendered="{!((fieldDefinitions[d].fType=='ID' || fieldDefinitions[d].fType=='REFERENCE') && fieldDefinitions[d].fValue!='' && fieldDefinitions[d].fValue!=null) }">
+          {!fieldDefinitions[d].fValue}
+        </apex:outputLink>
+        <apex:outputLink value="{!graxSettings.webURL + '/search?id=' + fieldDefinitions[d].fValue}" rendered="{!((fieldDefinitions[d].fType=='ID' || fieldDefinitions[d].fType=='REFERENCE') && fieldDefinitions[d].fValue!='' && fieldDefinitions[d].fValue!=null) }">
+        [GRAX]
+        </apex:outputLink>
+        <apex:outputLink value="{!fieldDefinitions[d].fValue}" rendered="{!((fieldDefinitions[d].fType=='URL') && fieldDefinitions[d].fValue!='' && fieldDefinitions[d].fValue!=null) }">
+          {!fieldDefinitions[d].fValue}
+        </apex:outputLink>
+        <apex:outputText  value="{0,date,M/dd/yyyy h:mm:ss}" rendered="{!((fieldDefinitions[d].fType=='DATETIME') && fieldDefinitions[d].fValue!='' && fieldDefinitions[d].fValue!=null) }">
+          <apex:param value="{!fieldDefinitions[d].fValueUserDatetime}" /> 
+        </apex:outputText>
+      </apex:column>
+    </apex:pageBlockTable>
+  </apex:pageBlock>
+
+  
+  <apex:repeat value="{!childObjects}" var="childObject" id="theRepeat">
+    <apex:pageBlock title="{!childObject}" id="pgcf">
+      <!-- Opportunity List Display (Sample with how you override) -->
+      <apex:pageBlockTable value="{!childObjectsFieldDef[childObject]}" var="childObjectList" rendered="{!childObjectsFieldDef != null && childObject=='Opportunity'}">
+        <apex:column headerValue="{!childObject} Id">
+            <apex:outputLink value="{!'/' + childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              {!childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}
+            </apex:outputLink>
+            <apex:outputLink value="{!graxSettings.webURL + '/search?embed=true&autologin=true&id=' + childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              [GRAX]
+            </apex:outputLink>
+          </apex:column>
+          <apex:column headerValue="Name">
+            {!childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
+          </apex:column>
+          <apex:column headerValue="Close Date">
+            {!childObjectsFieldDef[childObject][childObjectList]['CloseDate'].fValue}
+          </apex:column>
+      </apex:pageBlockTable>
+
+      <!-- This displays all child objects / default list display -->
+      <apex:pageBlockTable value="{!childObjectsFieldDef[childObject]}" var="childObjectList" rendered="{!childObjectsFieldDef != null && childObject!='Opportunity'}">
+          <apex:column headerValue="{!childObject} Id">
+            <apex:outputLink value="{!'/' + childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              {!childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}
+            </apex:outputLink>
+            <apex:outputLink value="{!graxSettings.webURL + '/search?embed=true&autologin=true&id=' + childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              [GRAX]
+            </apex:outputLink>
+          </apex:column>
+          <apex:column headerValue="Name">
+            {!childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
+          </apex:column>
+          <apex:column headerValue="Created Date">
+            {!childObjectsFieldDef[childObject][childObjectList]['CreatedDate'].fValueUserDatetime}
+          </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+  </apex:repeat>
+ </apex:form>
+</apex:page>
