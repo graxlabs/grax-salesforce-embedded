@@ -1,3 +1,7 @@
+/**
+ * GRAXEmbedAPIAccess is an extensible Salesforce wrapper class to call the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
+*/
+
 global virtual with sharing class GRAXEmbedAPIAccess {
     private Integer refreshedTokenValidFor = 0;
     private Boolean isTokenRefreshed = false;
@@ -8,9 +12,29 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 	private GRAXEmbedSettings gx = new GRAXEmbedSettings();
 	private String externalAPIEndpointStatic;
 
+    /**
+     * Call this method to load the parent object and/or children using the GRAX graph API. This will load ALL data in the graph for the parent.
+     * <p>
+     *
+     * @param  objName  Salesforce Object Name (ex Account)
+     * @param  recordId Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
+     * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
+     * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
+     */
     public String loadData(String objName, String recordId, String ChildObject){
         return loadData(objName, recordId, ChildObject, null);
     }
+
+    /**
+     * Use this method to load child data that is archived, deleted, or both.
+     * <p>
+     *
+     * @param  objName  Salesforce Object Name (ex Account)
+     * @param  recordId Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
+     * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
+     * @param  deleteSource salesforce, grax, any (deleted salesforce OR grax)
+     * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
+     */
 
     public String loadData(String objName, String recordId, String ChildObject, String deleteSource){
         String returnValue = '';

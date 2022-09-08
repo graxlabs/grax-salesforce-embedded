@@ -15,6 +15,7 @@ public with sharing class GRAXEmbedUIHelper {
     public string resultsJSON { get; set;}
     public List<Object> cases { get; set;}
 
+    // 
     public GRAXEmbedUIHelper(String LimitChildObjects) {
         this(LimitChildObjects, null);
     }
