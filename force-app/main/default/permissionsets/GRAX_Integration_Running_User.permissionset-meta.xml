@@ -13,11 +13,11 @@
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
-		<name>ModifyAllData</name>
+		<name>CreateAuditFields</name>
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
-		<name>CreateAuditFields</name>
+		<name>ModifyAllData</name>
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>

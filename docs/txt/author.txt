@@ -1,0 +1,2 @@
+projectName = GRAX Embedded UI for Salesforce 
+author = GRAX

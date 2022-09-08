@@ -1,9 +1,9 @@
 <!--
-  @description       : 
-  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
-  @group             : 
-  @last modified on  : 08-22-2022
-  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  @description       : GRAX Documentation page
+  @author            : product@grax.com
+  @group             : GRAX Product Development
+  @last modified on  : 09-08-2022
+  @last modified by  : product@grax.com
 -->
 <apex:page controller="GRAXEmbedSetup" lightningStylesheets="true" >
   <body class="slds-scope" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">   

@@ -1,0 +1,77 @@
+<!--
+  @description       : GRAX Embedded Record Display with Child List Sample Page
+  @author            : product@grax.com
+  @group             : GRAX Product Development
+  @last modified on  : 09-08-2022
+  @last modified by  : product@grax.com
+-->
+<apex:page controller="GRAXEmbedDisplayRecord">
+<apex:form >
+  <apex:pageBlock title="{!graxUIHelper.salesforceObject}" id="c">
+    <apex:pageBlockTable value="{!graxUIHelper.fieldDefinitions}" var="d" rendered="{!graxUIHelper.fieldDefinitions != null}">
+      <apex:column headerValue="Field Label">
+        {!graxUIHelper.fieldDefinitions[d].fLabel}
+      </apex:column>
+      <apex:column headerValue="Field Value">
+        <apex:outputText value="{!graxUIHelper.fieldDefinitions[d].fValue}" rendered="{!((graxUIHelper.fieldDefinitions[d].fType=='STRING' || graxUIHelper.fieldDefinitions[d].fType=='TEXTAREA' || graxUIHelper.fieldDefinitions[d].fType=='PICKLIST') && graxUIHelper.fieldDefinitions[d].fValue!='' && graxUIHelper.fieldDefinitions[d].fValue!=null) }">
+        </apex:outputText>
+        <apex:outputLink value="{!'/' + graxUIHelper.fieldDefinitions[d].fValue}" rendered="{!((graxUIHelper.fieldDefinitions[d].fType=='ID' || graxUIHelper.fieldDefinitions[d].fType=='REFERENCE') && graxUIHelper.fieldDefinitions[d].fValue!='' && graxUIHelper.fieldDefinitions[d].fValue!=null) }">
+          {!graxUIHelper.fieldDefinitions[d].fValue}
+        </apex:outputLink>
+        <apex:outputLink value="{!graxUIHelper.graxSettings.webURL + '/search?id=' + graxUIHelper.fieldDefinitions[d].fValue}" rendered="{!((graxUIHelper.fieldDefinitions[d].fType=='ID' || graxUIHelper.fieldDefinitions[d].fType=='REFERENCE') && graxUIHelper.fieldDefinitions[d].fValue!='' && graxUIHelper.fieldDefinitions[d].fValue!=null) }">
+        [GRAX]
+        </apex:outputLink>
+        <apex:outputLink value="{!graxUIHelper.fieldDefinitions[d].fValue}" rendered="{!((graxUIHelper.fieldDefinitions[d].fType=='URL') && graxUIHelper.fieldDefinitions[d].fValue!='' && graxUIHelper.fieldDefinitions[d].fValue!=null) }">
+          {!graxUIHelper.fieldDefinitions[d].fValue}
+        </apex:outputLink>
+        <apex:outputText  value="{0,date,M/dd/yyyy h:mm:ss}" rendered="{!((graxUIHelper.fieldDefinitions[d].fType=='DATETIME') && graxUIHelper.fieldDefinitions[d].fValue!='' && graxUIHelper.fieldDefinitions[d].fValue!=null) }">
+          <apex:param value="{!graxUIHelper.fieldDefinitions[d].fValueUserDatetime}" /> 
+        </apex:outputText>
+      </apex:column>
+    </apex:pageBlockTable>
+  </apex:pageBlock>
+
+  <apex:repeat value="{!graxUIHelper.childObjects}" var="childObject" id="theRepeat">
+    <apex:pageBlock title="{!childObject}" id="pgcf">
+      <!-- Opportunity Display -->
+      <apex:pageBlockTable value="{!graxUIHelper.childObjectsFieldDef[childObject]}" var="childObjectList" rendered="{!graxUIHelper.childObjectsFieldDef != null && childObject=='Opportunity'}">
+        <apex:column headerValue="{!childObject} Id">
+            <apex:outputLink value="{!'/' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}
+            </apex:outputLink>
+            <apex:outputLink value="{!graxUIHelper.graxSettings.webURL + '/search?embed=true&autologin=true&id=' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              [GRAX]
+            </apex:outputLink>
+          </apex:column>
+          <apex:column headerValue="Name">
+            {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
+          </apex:column>
+          <apex:column headerValue="Amount">
+            {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Amount'].fValue}
+          </apex:column>
+          <apex:column headerValue="Close Date">
+            {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['CloseDate'].fValue}
+          </apex:column>
+      </apex:pageBlockTable>
+
+      <!-- Default List Display-->
+      <apex:pageBlockTable value="{!graxUIHelper.childObjectsFieldDef[childObject]}" var="childObjectList" rendered="{!graxUIHelper.childObjectsFieldDef != null && childObject!='Opportunity'}">
+          <apex:column headerValue="{!childObject} Id">
+            <apex:outputLink value="{!'/' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}
+            </apex:outputLink>
+            <apex:outputLink value="{!graxUIHelper.graxSettings.webURL + '/search?embed=true&autologin=true&id=' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}">
+              [GRAX]
+            </apex:outputLink>
+          </apex:column>
+          <apex:column headerValue="Name">
+            {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
+          </apex:column>
+          <apex:column headerValue="Created Date">
+            {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['CreatedDate'].fValueUserDatetime}
+          </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+  </apex:repeat>
+ </apex:form>
+</apex:page>
