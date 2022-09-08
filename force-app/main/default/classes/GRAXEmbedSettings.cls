@@ -49,7 +49,7 @@ public virtual with sharing class GRAXEmbedSettings {
         return perms;
     }
 
-    private static void debugInfo(String value){
-        System.debug('GRAX_DEBUG_INFO: ' + value);
+    public static void debugInfo(String value){
+        System.debug('GRAX_DEBUG: ' + value);
     }
 }

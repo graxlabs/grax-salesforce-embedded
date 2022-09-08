@@ -1,6 +1,8 @@
 public with sharing class GRAXEmbedSFMetaHelper {
 
-    private static Map<String, Schema.DescribeSObjectResult> objectsFullDescribe {get; set;}
+    private static Map<String, Schema.SObjectType> globalDescribe;
+	private static Map<String, Map<String, Schema.DescribeFieldResult>> fieldsDescribeByObject;
+	private static Map<String, Schema.DescribeSObjectResult> objectsFullDescribe {get; set;}
 
     public GRAXEmbedSFMetaHelper() {
 
@@ -9,7 +11,7 @@ public with sharing class GRAXEmbedSFMetaHelper {
     // Get object field schema types from object definition.
     public static Map<String, GRAXFieldDefinition>  getFieldTypes(String objectName){
         Map<String, GRAXFieldDefinition> returnVal = new Map<String, GRAXFieldDefinition>();
-        Map<String, Schema.DescribeFieldResult> fieldTypes = GRAXEmbedUtils.getDescribeFieldsResultForObject(objectName);
+        Map<String, Schema.DescribeFieldResult> fieldTypes = GRAXEmbedSFMetaHelper.getDescribeFieldsResultForObject(objectName);
         if (fieldTypes != null){
             for(String fieldName : fieldTypes.keySet()) {
                 returnVal.put(
@@ -19,7 +21,7 @@ public with sharing class GRAXEmbedSFMetaHelper {
                     
                 if (returnVal.get(fieldName).isNameField && returnVal.get('Name') == null){
                     returnVal.put('Name', returnVal.get(fieldName));
-                    System.debug('GRAX_DEBUG: ' + returnVal.get(fieldName) + ' Value: ' + returnVal.get(fieldName).fValue);
+                    GRAXEmbedSettings.debugInfo('' + returnVal.get(fieldName) + ' Value: ' + returnVal.get(fieldName).fValue);
                 }
             }
         }
@@ -60,6 +62,68 @@ public with sharing class GRAXEmbedSFMetaHelper {
         cSObjField.isHtmlFormatted = fieldResult.isHtmlFormatted();
         return cSObjField;
     }
+
+    public static Map<String, Schema.DescribeFieldResult> getDescribeFieldsResultForObject(String objName){
+		loadObjectAndFieldsDescribe(objName);
+		return fieldsDescribeByObject.get(objName);
+	}
+
+	private static void loadGlobalDescribe(){
+		if(globalDescribe == null){
+			globalDescribe = Schema.getGlobalDescribe();
+		}
+	}
+
+	public static Boolean sObjectExists( String objName ){
+		loadGlobalDescribe();
+
+		return globalDescribe.containsKey( objName );
+	}
+
+	private static void loadObjectDescribe(String objName){
+		if(objectsFullDescribe == null){
+			objectsFullDescribe = new Map<String, Schema.DescribeSObjectResult>();
+		}
+
+		if(!objectsFullDescribe.containsKey(objName) && sObjectExists(objName)){
+			objectsFullDescribe.put(objName, globalDescribe.get(objName).getDescribe());
+		}
+	}
+
+	private static void loadObjectAndFieldsDescribe(String objName){
+		if(fieldsDescribeByObject == null){
+			fieldsDescribeByObject = new Map<String, Map<String, Schema.DescribeFieldResult>>();
+		}
+
+		if(!fieldsDescribeByObject.containsKey(objName) && sObjectExists(objName)){
+			Schema.DescribeSObjectResult objDesc = getObjectDescribe(objName);
+
+			Map<String, Schema.DescribeFieldResult> fieldsDescribe = new Map<String, Schema.DescribeFieldResult>();
+
+			// Get the describe of each field of the object
+			Map<String, Schema.SObjectField> objDescFieldsMap = objDesc.fields.getMap();
+			for(String fieldAPIName: objDescFieldsMap.keySet()){
+				Schema.DescribeFieldResult fldDescRes = objDescFieldsMap.get(fieldAPIName).getDescribe();
+				fieldsDescribe.put(fldDescRes.getName(), fldDescRes);
+			}
+			fieldsDescribeByObject.put(objDesc.getName(), fieldsDescribe);
+		}
+	}
+
+	public static Schema.DescribeSObjectResult getObjectDescribe(String objName){
+		loadObjectDescribe(objName);
+
+		return objectsFullDescribe.get(objName);
+	}
+
+	// This method does not store in the transaction cache the retrieved Object's Describe
+	public static Schema.DescribeSObjectResult getObjectDescribe(String objName, Boolean clearCache){
+		Schema.DescribeSObjectResult result = getObjectDescribe(objName);
+		if(clearCache){
+			objectsFullDescribe.remove(objName);
+		}
+		return result;
+	}
 
     public class GRAXFieldDefinition {
         @AuraEnabled

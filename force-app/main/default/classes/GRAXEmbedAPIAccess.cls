@@ -26,18 +26,18 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 
         if (!Test.isRunningTest()){
             try{
-                system.debug('GRAX_DEBUG: fullAPIPath:' + fullAPIPath);
+                GRAXEmbedSettings.debugInfo('fullAPIPath:' + fullAPIPath);
                 Long beforeAPICall = Datetime.now().getTime();
                 HttpResponse res = this.apiCallOut('GET',fullAPIPath,'',false);
                 responseTimeMS = Datetime.now().getTime() - beforeAPICall; // Milliseconds
                 responseBody = res.getBody();
                 // responseJSON = GRAXLWCHelper.filterRecordAccess(objName,responseBody,filterFields.split(','),enforceRowSecurity,limitFields);
                 returnValue = responseBody;
-                system.debug('GRAX_DEBUG: LoadData Finished ' + responseTimeMS + ' MS');
+                GRAXEmbedSettings.debugInfo('LoadData Finished ' + responseTimeMS + ' MS');
             } catch (Exception ex) {
-                system.debug('error calling GRAX API : '  + ex.getMessage());
-                system.debug('responseBody: ' + responseBody);
-                system.debug('fullAPIPath: ' + fullAPIPath);
+                GRAXEmbedSettings.debugInfo('error calling GRAX API : '  + ex.getMessage());
+                GRAXEmbedSettings.debugInfo('responseBody: ' + responseBody);
+                GRAXEmbedSettings.debugInfo('fullAPIPath: ' + fullAPIPath);
             }
         }
         return returnValue;
@@ -59,9 +59,9 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 		}
 		http call = new http();
 		HttpResponse res = call.send(req);
-		system.debug('GRAX_DEBUG: Status Code: ' + res.getStatusCode());
+		GRAXEmbedSettings.debugInfo('Status Code: ' + res.getStatusCode());
 		if (res.getStatusCode() == 500){
-			system.debug('APEX Request failed: Endpoint "' + endpoint + '" ' + res.getBody());
+			GRAXEmbedSettings.debugInfo('APEX Request failed: Endpoint "' + endpoint + '" ' + res.getBody());
 		}
 		return res;
 	}
