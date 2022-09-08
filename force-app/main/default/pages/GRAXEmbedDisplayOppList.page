@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 09-02-2022
+  @last modified on  : 09-08-2022
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <apex:page standardController="Account" extensions="GRAXEmbedDisplayOppList">
@@ -21,6 +21,9 @@
                 [APEX]
               </apex:outputLink>
             </apex:column>
+            <apex:column headerValue="Stage Name">
+              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['StageName'].fValue}
+            </apex:column>
             <apex:column headerValue="Name">
               {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
             </apex:column>
@@ -29,6 +32,11 @@
             </apex:column>
             <apex:column headerValue="Close Date">
               {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['CloseDate'].fValue}
+            </apex:column>
+            <apex:column headerValue="Account Id">
+              <apex:outputLink value="{!'/' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['AccountId'].fValue}" target='_parent'>
+                {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['AccountId'].uiDisplayValue}
+              </apex:outputLink>
             </apex:column>
         </apex:pageBlockTable>
       </apex:pageBlock>

@@ -9,28 +9,37 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 	private String externalAPIEndpointStatic;
 
     public String loadData(String objName, String recordId, String ChildObject){
+        return loadData(objName, recordId, ChildObject, null);
+    }
+
+    public String loadData(String objName, String recordId, String ChildObject, String deleteSource){
         String returnValue = '';
         String responseBody = '';
 		String fullAPIPath = gx.AppURL + '/app/objects/' + objName + '/records/' + recordId + '/latest/graph?includeFields=true&level=1';
         if (ChildObject!=null && ChildObject!=''){
             fullAPIPath += '&childObject=' + ChildObject;
         }
-		system.debug('GRAX_DEBUG: fullAPIPath:' + fullAPIPath);
+
+        if (deleteSource!=null){
+            fullAPIPath += '&deleteSource=' + deleteSource;
+        }
+
         if (!Test.isRunningTest()){
             try{
+                system.debug('GRAX_DEBUG: fullAPIPath:' + fullAPIPath);
                 Long beforeAPICall = Datetime.now().getTime();
                 HttpResponse res = this.apiCallOut('GET',fullAPIPath,'',false);
                 responseTimeMS = Datetime.now().getTime() - beforeAPICall; // Milliseconds
                 responseBody = res.getBody();
                 // responseJSON = GRAXLWCHelper.filterRecordAccess(objName,responseBody,filterFields.split(','),enforceRowSecurity,limitFields);
                 returnValue = responseBody;
+                system.debug('GRAX_DEBUG: LoadData Finished ' + responseTimeMS + ' MS');
             } catch (Exception ex) {
                 system.debug('error calling GRAX API : '  + ex.getMessage());
                 system.debug('responseBody: ' + responseBody);
                 system.debug('fullAPIPath: ' + fullAPIPath);
             }
         }
-		system.debug('GRAX_DEBUG: LoadData Finished ' + responseTimeMS + ' MS');
         return returnValue;
     }
 

@@ -94,6 +94,8 @@ public with sharing class GRAXEmbedSFMetaHelper {
         public String relationshipName {get;set;}
         @AuraEnabled
         public String referenceTo {get;set;}
+        @AuraEnabled
+        public String uiDisplayValue {get;set;}
 
         public GRAXFieldDefinition() {
 			isRequired = false;

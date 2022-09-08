@@ -15,12 +15,71 @@ public with sharing class GRAXEmbedUIHelper {
     public string resultsJSON { get; set;}
     public List<Object> cases { get; set;}
 
+    /*
+List<String> t = new List<String>();
+t.add('AccountId');
+t.add('CreatedById');
+GRAXEmbedUIHelper obj = new GRAXEmbedUIHelper('Opportunity', t, '0018V00002Q6mbSQAR');
+    */
     public GRAXEmbedUIHelper(String LimitChildObjects) {
+        this(LimitChildObjects, null);
+    }
+
+    public GRAXEmbedUIHelper(String LimitChildObjects, List<String> MapNamesToIds) {
+        this(LimitChildObjects, MapNamesToIds, ApexPages.currentPage().getParameters().get('id'));
+    }
+
+    public GRAXEmbedUIHelper(String LimitChildObjects, List<String> MapNamesToIds, String CurrentParentId) {
         graxSettings = new GRAXEmbedSettings();
-        salesforceId = GRAXEmbedUIHelper.convertId(ApexPages.currentPage().getParameters().get('id'));
+        salesforceId = GRAXEmbedUIHelper.convertId(CurrentParentId);
         prefixObjectMap = GRAXEmbedSFMetaHelper.getPrefixToObjectMap();
+        fieldDefinitions = GRAXEmbedSFMetaHelper.getFieldTypes(LimitChildObjects);
         salesforceObject = GetObjectFromId(salesforceId);
         this.getGRAXData(LimitChildObjects);
+        if (MapNamesToIds!=null){
+            this.MapNameToIdFields(LimitChildObjects,MapNamesToIds);
+        }
+    }
+
+    private static String GetRelationshipName(String fieldName){
+        String QueryFieldName = fieldName;
+        if (fieldName.endsWith('Id'))
+            QueryFieldName = fieldName.left(fieldName.length()-2);
+        else if (fieldName.endsWith('__c'))
+            QueryFieldName = fieldName.replace('__c', '__r');
+        return QueryFieldName;
+    }
+
+    private void MapNameToIdFields(String ChildObjectName, String[] MapNamesToIds){
+        if (MapNamesToIds!=null && ChildObjectName != null){
+            String Query = '';
+            for(String fieldName : MapNamesToIds){
+                if (fieldDefinitions.containsKey(fieldName)){
+                    if (fieldDefinitions.get(fieldName).referenceTo!=null){
+                        if (Query!='') 
+                            Query += ',';
+                        Query += GRAXEmbedUIHelper.GetRelationshipName(fieldName) + '.Name';
+                        Query += ',' + fieldName;
+                    }
+                }
+            }
+            Set<String> IdList = childObjectsFieldDef.get(ChildObjectName).keySet();
+            if (Query!=''){
+                Query = 'SELECT Id, ' + Query + ' FROM ' + ChildObjectName + ' WHERE Id IN: IdList';
+                //System.debug('GRAX_DEBUG: Child Query : ' + Query);
+                //System.debug('GRAX_DEBUG: ID List : ' + IdList);
+                List<sObject> sobjList = Database.query(Query);
+                System.debug('GRAX_DEBUG: sobjList: ' + sobjList);
+                for(sObject obj : sobjList){
+                    for(String fieldName : MapNamesToIds){
+                        if (fieldDefinitions.get(fieldName).referenceTo!=null){
+                            childObjectsFieldDef.get(ChildObjectName).get(obj.Id).get(fieldName).uiDisplayValue = obj.getSObject(GetRelationshipName(fieldName)).get('Name').toString();
+                            //System.debug('GRAX_DEBUG: obj : ' + obj.Id + ' Name: ' + childObjectsFieldDef.get(ChildObjectName).get(obj.Id).get(fieldName).uiDisplayValue);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public String GetObjectFromId(String salesforceId){
@@ -57,13 +116,12 @@ public with sharing class GRAXEmbedUIHelper {
         if (salesforceId != ''){
             childObjects = new Map<String, Map<String,Object>>();
             jsondata = apiAccess.loadData(salesforceObject, salesforceId, ChildObject);
-            fieldDefinitions = GRAXEmbedSFMetaHelper.getFieldTypes(salesforceObject);
             Integer counter = 0;
             results = (List<Object>) JSON.deserializeUntyped(jsondata);
             resultsJSON = JSON.serialize(results);
             for (Object obj: results) {
                 Map<String, Object> a = (Map<String, Object>)obj;
-                if (counter==0){
+                if (counter==0 && (ChildObject==null || ChildObject=='')){
                     objectData = (Map<String, Object>)a.get('fields');
                     fieldDefinitions = this.mergeValues(fieldDefinitions,objectData);
                 } else {
@@ -76,7 +134,7 @@ public with sharing class GRAXEmbedUIHelper {
                 }
                 counter++;
             }
-            this.mergeChildRecords();
+            this.mergeChildRecords(ChildObject);
             // System.debug('GRAX_DEBUG: response : ' + jsondata);
             // System.debug('GRAX_DEBUG: fields : ' + fields);
         } else {
@@ -116,17 +174,20 @@ public with sharing class GRAXEmbedUIHelper {
         return fieldDefMap;
     }
 
-    private void mergeChildRecords(){
+    private void mergeChildRecords(String targetObject){
         childObjectsFieldDef = new Map<String, Map<String, Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>>>();
+        System.debug('GRAX_DEBUG: keySet Size: ' + childObjects.keySet().size());
         for(String objectName : childObjects.keySet()){
-            Map<String,Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> objectRecordList = new Map<String, Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>>();
-            for(String Id : childObjects.get(objectName).keySet()){
-                Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> currentFieldDefinition = GRAXEmbedSFMetaHelper.getFieldTypes(objectName);
-                Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> recordValues = mergeValues(currentFieldDefinition, (Map<String, Object>)childObjects.get(objectName).get(Id));
-                objectRecordList.put(Id, recordValues);
-                System.debug('GRAX_DEBUG: ' + objectName + ' ' + Id + ' Name: ' + recordValues.get('Name').fValue + ' Test: ' + objectRecordList.get(Id).get('Name').fValue);
-            }
-            childObjectsFieldDef.put(objectName, objectRecordList);
+            //if (targetObject==objectName){
+                Map<String,Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> objectRecordList = new Map<String, Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>>();
+                for(String Id : childObjects.get(objectName).keySet()){
+                    Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> currentFieldDefinition = GRAXEmbedSFMetaHelper.getFieldTypes(objectName);
+                    Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> recordValues = mergeValues(currentFieldDefinition, (Map<String, Object>)childObjects.get(objectName).get(Id));
+                    objectRecordList.put(Id, recordValues);
+                    System.debug('GRAX_DEBUG: ' + objectName + ' ' + Id + ' Name: ' + recordValues.get('Name').fValue + ' Test: ' + objectRecordList.get(Id).get('Name').fValue);
+                }
+                childObjectsFieldDef.put(objectName, objectRecordList);
+            //}
         }
     }
 }
