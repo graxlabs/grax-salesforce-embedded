@@ -1,3 +1,6 @@
+/**
+ * GRAXEmbedUIHelper is the main class for rendering data from GRAX that is merged with Salesforce Metadata Field definitions. Please see sample usage in existing UI samples.
+*/
 public with sharing class GRAXEmbedUIHelper {
     public String salesforceObject { get; set; } 
     public String salesforceId  { get; set; } 

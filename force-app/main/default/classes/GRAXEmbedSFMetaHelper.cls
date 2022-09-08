@@ -1,3 +1,6 @@
+/**
+ * GRAXEmbedSFMetaHelper is the wrapper class for merging Salesforce Metadata with GRAX data.
+*/
 public with sharing class GRAXEmbedSFMetaHelper {
 
     private static Map<String, Schema.SObjectType> globalDescribe;

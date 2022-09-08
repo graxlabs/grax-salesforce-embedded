@@ -1,3 +1,6 @@
+/**
+ * GRAXEmbedSetup is the default GRAX Setup page 
+*/
 public with sharing class GRAXEmbedSetup {
     public String selectedGraxAppURL {get;set;}
     public String iFrameSrc {get;set;}

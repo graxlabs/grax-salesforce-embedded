@@ -1,9 +1,9 @@
 <!--
-  @description       : 
-  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
-  @group             : 
+  @description       : GRAX Embedded Record Display for Opportunity List Embed on Account Layout Sample
+  @author            : product@grax.com
+  @group             : GRAX Product Development
   @last modified on  : 09-08-2022
-  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  @last modified by  : product@grax.com
 -->
 <apex:page standardController="Account" extensions="GRAXEmbedDisplayOppList">
   <apex:form >
