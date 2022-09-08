@@ -1,7 +1,6 @@
 /**
  * GRAXEmbedAPIAccess is an extensible Salesforce wrapper class to call the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
 */
-
 global virtual with sharing class GRAXEmbedAPIAccess {
     private Integer refreshedTokenValidFor = 0;
     private Boolean isTokenRefreshed = false;

@@ -1,3 +1,6 @@
+/**
+ * Helper method for UI page simply calling GRAXEmbedUIHelper
+*/
 public with sharing class GRAXEmbedDisplayOppList {
     
     public GRAXEmbedUIHelper graxUIHelper { get; set; }

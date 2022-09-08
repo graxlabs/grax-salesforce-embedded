@@ -7,4 +7,4 @@ cp ./SfApexDocs/*.* ./docs/documentation/
 cp ./docs/images/logo.png ./docs/documentation/logo.png
 rm -fr ./SfApexDocs
 rm ./SfApexDocLog.txt
-open ./docs/documentation/index.html
+# open ./docs/documentation/index.html
