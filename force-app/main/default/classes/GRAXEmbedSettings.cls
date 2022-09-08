@@ -1,3 +1,6 @@
+/**
+ * GRAXEmbedSettings is a wrapper class to read the custom settings needed to communicate with the <a href="https://apidocs.grax.io/">GRAX API</a> or Embedded LWC.
+*/
 public virtual with sharing class GRAXEmbedSettings {
     public GRAXEmbedConfiguration__c gxs {get; set;}
     public String apiURL {get; set;}
