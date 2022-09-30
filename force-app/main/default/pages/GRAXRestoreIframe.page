@@ -1,0 +1,16 @@
+<!--
+  @description       : 
+  @author            : product@grax.com
+  @group             : 
+  @last modified on  : 09-30-2022
+  @last modified by  : product@grax.com
+  Modifications Log
+  Ver   Date         Author             Modification
+  1.0   09-30-2022   product@grax.com   Initial Version
+-->
+
+<apex:page standardController="Account"  extensions="GRAXRestoreIframe" >
+    {!iFrameSrc}
+    <iframe height="900px" id="graxSetup" name="graxSetup" src="{!iFrameSrc}" width="100%" style="border:none;" >
+    </iframe>  
+</apex:page>
