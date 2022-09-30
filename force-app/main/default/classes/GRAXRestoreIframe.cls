@@ -10,8 +10,10 @@
 **/
 public with sharing class GRAXRestoreIframe {
     public String iFrameSrc {get;set;}
+    public String appUrl {get;set;}
     public GRAXRestoreIframe(ApexPages.standardController std) {
         GRAXEmbedSettings settings = new GRAXEmbedSettings();
         iFrameSrc = settings.appURL + '/web/restore/record/Account/' + ApexPages.currentPage().getParameters().get('id') + '?autologin=true&embedded=true';
+        appUrl = settings.appURL;
     }
 }
