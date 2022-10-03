@@ -23,6 +23,12 @@
 - Choice 1 - [GRAX for Salesforce Embedded](./docs/README.md#step-2--grax-ui-for-salesforce) - Open, Extensible, and Best User Experience
 - Choice 2 - [No Installation (Config Only)](./docs/NO-INSTALLATION.md) - Quickest with Least Burden, No LWC
 
+## Samples
+
+- [Restore in iFrame](./force-app/main/default/pages/GRAXRestoreIframe.page] - Add Button to Account Page Point at This Page
+- [Display Opportunity List](./force-app/main/default/pages/GRAXEmbedDisplayOppList.page) - Add to Account Detail Page
+- [Display Record](./force-app/main/default/pages/GRAXEmbedDisplayRecord.page) - Links from [Display Opportunity List](./force-app/main/default/pages/GRAXEmbedDisplayOppList.page)
+
 ## Support + Feedback
 
 Include information on how to get support. Consider adding:
