@@ -25,7 +25,7 @@
 
 ## Samples
 
-- [Restore in iFrame](./force-app/main/default/pages/GRAXRestoreIframe.page] - Add Button to Account Page Point at This Page
+- [Restore in iFrame](./force-app/main/default/pages/GRAXRestoreIframe.page) - Add Button to Account Page Point at This Page
 - [Display Opportunity List](./force-app/main/default/pages/GRAXEmbedDisplayOppList.page) - Add to Account Detail Page
 - [Display Record](./force-app/main/default/pages/GRAXEmbedDisplayRecord.page) - Links from [Display Opportunity List](./force-app/main/default/pages/GRAXEmbedDisplayOppList.page)
 
