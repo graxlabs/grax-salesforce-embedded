@@ -4,6 +4,8 @@
 public with sharing class GRAXEmbedUIHelper {
     public String salesforceObject { get; set; } 
     public String salesforceId  { get; set; } 
+    public String deleteSource  { get; set; } 
+
     public GRAXEmbedSettings graxSettings  { get; set; } 
 
     public Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> fieldDefinitions { get; set; } 
@@ -28,6 +30,11 @@ public with sharing class GRAXEmbedUIHelper {
     }
 
     public GRAXEmbedUIHelper(String LimitChildObjects, List<String> MapNamesToIds, String CurrentParentId) {
+        this(LimitChildObjects, MapNamesToIds, CurrentParentId, NULL);
+    }
+
+    // Pass in delete source if you only want to display Deleted=salesforce or Archived=grax 
+    public GRAXEmbedUIHelper(String LimitChildObjects, List<String> MapNamesToIds, String CurrentParentId, string deleteSource) {
         graxSettings = new GRAXEmbedSettings();
         salesforceId = GRAXEmbedUIHelper.convertId(CurrentParentId);
         prefixObjectMap = GRAXEmbedSFMetaHelper.getPrefixToObjectMap();
@@ -115,7 +122,7 @@ public with sharing class GRAXEmbedUIHelper {
         GRAXEmbedAPIAccess apiAccess = new GRAXEmbedAPIAccess();
         if (salesforceId != ''){
             childObjects = new Map<String, Map<String,Object>>();
-            jsondata = apiAccess.loadData(salesforceObject, salesforceId, ChildObject);
+            jsondata = apiAccess.loadData(salesforceObject, salesforceId, ChildObject, deleteSource);
             results = (List<Object>) JSON.deserializeUntyped(jsondata);
             resultsJSON = JSON.serialize(results);
             for (Object obj: results) {
