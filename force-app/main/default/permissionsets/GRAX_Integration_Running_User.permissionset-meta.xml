@@ -21,15 +21,23 @@
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
-		<name>ViewDataLeakageEvents</name>
-	</userPermissions>
-	<userPermissions>
-		<enabled>true</enabled>
 		<name>ViewEventLogFiles</name>
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>
-		<name>ViewPlatformEvents</name>
+		<name>ViewAllForecasts</name>
+	</userPermissions>
+	<userPermissions>
+		<enabled>true</enabled>
+		<name>ManagePartnerNetConn</name>
+	</userPermissions>
+	<userPermissions>
+		<enabled>true</enabled>
+		<name>ManageQuotas</name>
+	</userPermissions>
+	<userPermissions>
+		<enabled>true</enabled>
+		<name>OverrideForecasts</name>
 	</userPermissions>
 	<userPermissions>
 		<enabled>true</enabled>

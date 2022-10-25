@@ -22,11 +22,11 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
    cd grax-salesforce-embedded
    ```
 
-4. Login to Salesforce
+4. Login to Salesforce. First log in thru your web browser, then the authorize the Salesforce CLI:
 
     ```
        sfdx auth:web:login -a GRAXDev -r https://test.salesforce.com
-    ```   
+    ``` 
 
 4. Enable "Set Audit Fields upon Record Creation" and "Update Records with Inactive Owners" User Permissions
     If you do not do this pushing the permission sets will fail.
@@ -51,7 +51,7 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
 
 ### Step 3 : Configure & Go
 
-1. GRAX Configuration Settings - Click "Manage" Button on GRAXConfiguration__c object
+1. GRAX Configuration Settings - Click "Manage" Button on "GRAX Configuration Settings" (GRAXConfiguration__c object)
     ```
     sfdx force:org:open -u GRAXDev -p /lightning/setup/CustomSettings/home
     ```
@@ -65,6 +65,16 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
     sfdx force:org:open -u GRAXDev -p /lightning/setup/SecurityCspTrustedSite/home
     ```
     ![GRAX CSP](./Images/CSP-Trusted-Sites.png)
+
+Select the following directives:
+
+  - Allow site for connect-src
+  - Allow site for font-src
+  - Allow site for frame-src
+  - Allow site for frame-src
+  - Allow site for img-src
+  - Allow site for media-src
+  - Allow site for style-src
 
 3. Permission Set Assignments - Add All GRAX Permission Sets (to Admin User). Ensure "GRAX_Integration_Running_User" permission set is assigned to the user GRAX is running as.
     ```
