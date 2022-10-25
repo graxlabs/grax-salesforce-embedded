@@ -4,8 +4,6 @@
 public with sharing class GRAXEmbedUIHelper {
     public String salesforceObject { get; set; } 
     public String salesforceId  { get; set; } 
-    public String deleteSource  { get; set; } 
-
     public GRAXEmbedSettings graxSettings  { get; set; } 
 
     public Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> fieldDefinitions { get; set; } 
@@ -34,12 +32,12 @@ public with sharing class GRAXEmbedUIHelper {
     }
 
     // Pass in delete source if you only want to display Deleted=salesforce or Archived=grax 
-    public GRAXEmbedUIHelper(String LimitChildObjects, List<String> MapNamesToIds, String CurrentParentId, string deleteSource) {
+    public GRAXEmbedUIHelper(String LimitChildObjects, List<String> MapNamesToIds, String CurrentParentId, String deleteSourceFilter) {
         graxSettings = new GRAXEmbedSettings();
         salesforceId = GRAXEmbedUIHelper.convertId(CurrentParentId);
         prefixObjectMap = GRAXEmbedSFMetaHelper.getPrefixToObjectMap();
         salesforceObject = GetObjectFromId(salesforceId);
-        this.getGRAXData(LimitChildObjects);
+        this.getGRAXData(LimitChildObjects, deleteSourceFilter);
         if (MapNamesToIds!=null){
             this.MapNameToIdFields(LimitChildObjects,MapNamesToIds);
         }
@@ -54,36 +52,57 @@ public with sharing class GRAXEmbedUIHelper {
         return QueryFieldName;
     }
 
-    private void MapNameToIdFields(String ChildObjectName, String[] MapNamesToIds){
-        if (MapNamesToIds!=null && ChildObjectName != null){
-            if (fieldDefinitions==null){
-                fieldDefinitions = GRAXEmbedSFMetaHelper.getFieldTypes(ChildObjectName);
+    private void MapNameToIdFields(String ChildObjectName, String[] fieldNames){
+        if (ChildObjectName==null || fieldNames==null){
+            return;
+        }
+        if (fieldDefinitions==null){
+            fieldDefinitions = GRAXEmbedSFMetaHelper.getFieldTypes(ChildObjectName);
+        }
+        String Query = '';
+        for(String fieldName : fieldNames){
+            GRAXEmbedSFMetaHelper.GRAXFieldDefinition fieldDefinition = fieldDefinitions.get(fieldName);
+            if (fieldDefinition==null){
+                GRAXEmbedSettings.debugInfo('[1]Skipping due to null fieldDefinition for fieldName: '+ fieldName);
+                continue;
             }
-            String Query = '';
-            for(String fieldName : MapNamesToIds){
-                if (fieldDefinitions.containsKey(fieldName)){
-                    if (fieldDefinitions.get(fieldName).referenceTo!=null){
-                        if (Query!='') 
-                            Query += ',';
-                        Query += GRAXEmbedUIHelper.GetRelationshipName(fieldName) + '.Name';
-                        Query += ',' + fieldName;
-                    }
+            if (fieldDefinition.referenceTo!=null){
+                if (Query!='') {
+                    Query += ',';
                 }
+                Query += GRAXEmbedUIHelper.GetRelationshipName(fieldName) + '.Name';
+                Query += ',' + fieldName;
             }
-            Set<String> IdList = childObjectsFieldDef.get(ChildObjectName).keySet();
-            if (Query!=''){
-                Query = 'SELECT Id, ' + Query + ' FROM ' + ChildObjectName + ' WHERE Id IN: IdList';
-                //GRAXEmbedSettings.debugInfo('Child Query : ' + Query);
-                //GRAXEmbedSettings.debugInfo('ID List : ' + IdList);
-                List<sObject> sobjList = Database.query(Query);
-                GRAXEmbedSettings.debugInfo('sobjList: ' + sobjList);
-                for(sObject obj : sobjList){
-                    for(String fieldName : MapNamesToIds){
-                        if (fieldDefinitions.get(fieldName).referenceTo!=null){
-                            childObjectsFieldDef.get(ChildObjectName).get(obj.Id).get(fieldName).uiDisplayValue = obj.getSObject(GetRelationshipName(fieldName)).get('Name').toString();
-                            //GRAXEmbedSettings.debugInfo('obj : ' + obj.Id + ' Name: ' + childObjectsFieldDef.get(ChildObjectName).get(obj.Id).get(fieldName).uiDisplayValue);
-                        }
+        }
+        
+        if (childObjectsFieldDef==null){
+            return; //this is null when there are no related child records
+        }
+        Map<String, Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> childObjectListMap = childObjectsFieldDef.get(childObjectName);
+        if (childObjectListMap==null){
+            //throw new IllegalArgumentException('grax_null_child_object_exception');
+            return;
+        }
+        if (Query!=''){
+            Set<String> idList = childObjectListMap.keySet();
+            Query = 'SELECT Id, ' + Query + ' FROM ' + ChildObjectName + ' WHERE Id IN: idList';
+            //GRAXEmbedSettings.debugInfo('Child Query : ' + Query);
+            //GRAXEmbedSettings.debugInfo('ID List : ' + idList);
+            List<sObject> sobjList = Database.query(Query);
+            GRAXEmbedSettings.debugInfo('sobjList: ' + sobjList);
+            for(sObject obj : sobjList){
+                for(String fieldName : fieldNames){
+                    GRAXEmbedSFMetaHelper.GRAXFieldDefinition fieldDefinition = fieldDefinitions.get(fieldName);
+                    if (fieldDefinition==null){
+                        GRAXEmbedSettings.debugInfo('[2]Skipping due to null fieldDefinition for fieldName: '+ fieldName);
+                        continue;
                     }
+                    if (fieldDefinition.referenceTo==null){
+                        return;
+                    }
+                    
+                    childObjectListMap.get(obj.Id).get(fieldName).uiDisplayValue = obj.getSObject(GetRelationshipName(fieldName)).get('Name').toString();
+                    //GRAXEmbedSettings.debugInfo('obj : ' + obj.Id + ' Name: ' + childObjectsFieldDef.get(ChildObjectName).get(obj.Id).get(fieldName).uiDisplayValue);
                 }
             }
         }
@@ -118,7 +137,7 @@ public with sharing class GRAXEmbedUIHelper {
         }
     }
 
-    public PageReference getGRAXData(String ChildObject) {
+    public PageReference getGRAXData(String ChildObject, String deleteSource) {
         GRAXEmbedAPIAccess apiAccess = new GRAXEmbedAPIAccess();
         if (salesforceId != ''){
             childObjects = new Map<String, Map<String,Object>>();
@@ -139,10 +158,10 @@ public with sharing class GRAXEmbedUIHelper {
                     }
                     childObjects.get(GetObjectFromId(id)).put(id,childData);
                 }
+                this.mergeChildRecords();
+                // GRAXEmbedSettings.debugInfo('response : ' + jsondata);
+                // GRAXEmbedSettings.debugInfo('fields : ' + fields);
             }
-            this.mergeChildRecords();
-            // GRAXEmbedSettings.debugInfo('response : ' + jsondata);
-            // GRAXEmbedSettings.debugInfo('fields : ' + fields);
         } else {
             objectData = null;
         }
@@ -189,7 +208,7 @@ public with sharing class GRAXEmbedUIHelper {
                 Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> currentFieldDefinition = GRAXEmbedSFMetaHelper.getFieldTypes(objectName);
                 Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition> recordValues = mergeValues(currentFieldDefinition, (Map<String, Object>)childObjects.get(objectName).get(Id));
                 objectRecordList.put(Id, recordValues);
-                // GRAXEmbedSettings.debugInfo('' + objectName + ' ' + Id + ' Name: ' + recordValues.get('Name').fValue + ' Test: ' + objectRecordList.get(Id).get('Name').fValue);
+                //GRAXEmbedSettings.debugInfo('' + objectName + ' ' + Id + ' Name: ' + recordValues.get('Name').fValue + ' Test: ' + objectRecordList.get(Id).get('Name').fValue);
             }
             childObjectsFieldDef.put(objectName, objectRecordList);
         }

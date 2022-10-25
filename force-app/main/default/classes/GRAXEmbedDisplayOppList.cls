@@ -8,7 +8,13 @@ public with sharing class GRAXEmbedDisplayOppList {
     public GRAXEmbedDisplayOppList(ApexPages.standardController std) {
         // Only return Opportunity records
         // Lookup Name for AccountId
-        graxUIHelper = new GRAXEmbedUIHelper('Opportunity',new List<String>{'AccountId'});
-        numberofRecords = graxUIHelper.childObjectsFieldDef.get('Opportunity').size();
+        numberofRecords = 0;
+        graxUIHelper = new GRAXEmbedUIHelper('Opportunity',new List<String>{'AccountId'}, ApexPages.currentPage().getParameters().get('id'), 'any');
+        if (graxUIHelper.childObjectsFieldDef!=null){
+            Map<String, Map<String,GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> mapChildObjectVar = graxUIHelper.childObjectsFieldDef.get('Opportunity');
+            if (mapChildObjectVar!=null){
+                numberofRecords = mapChildObjectVar.size();
+            }
+        }
     }
 }
