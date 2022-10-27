@@ -173,7 +173,7 @@ public with sharing class GRAXEmbedSFMetaHelper {
             this.isNameField = false;
             this.isHtmlFormatted = false;
             this.referenceTo='';
-		}
+        }
 
         // used to copy a field definition object
         public GRAXFieldDefinition(GRAXFieldDefinition def) {
