@@ -29,21 +29,21 @@ global virtual with sharing class GRAXEmbedAPIAccess {
      * <p>
      *
      * @param  objName  Salesforce Object Name (ex Account)
-     * @param  recordId Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
+     * @param  recordID Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
      * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
      * @param  deleteSource salesforce, grax, any (deleted salesforce OR grax)
      * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
      */
 
-    public String loadData(String objName, String recordId, String ChildObject, String deleteSource){
+    public String loadData(String parentObject, String recordID, String childObject, String deleteSource){
         String returnValue = '';
         String responseBody = '';
-		String fullAPIPath = gx.AppURL + '/app/objects/' + objName + '/records/' + recordId + '/latest/graph?includeFields=true&level=1';
-        if (ChildObject!=null && ChildObject!=''){
-            fullAPIPath += '&childObject=' + ChildObject;
+		String fullAPIPath = gx.AppURL + '/app/objects/' + parentObject + '/records/' + recordID + '/latest/graph?includeFields=true&level=1';
+        if (!String.isEmpty(childObject)){
+            fullAPIPath += '&childObject=' + childObject;
         }
 
-        if (deleteSource!=null){
+        if (!String.isEmpty(deleteSource)){
             fullAPIPath += '&deleteSource=' + deleteSource;
         }
 

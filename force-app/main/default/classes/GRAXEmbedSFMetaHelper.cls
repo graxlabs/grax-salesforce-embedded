@@ -165,14 +165,35 @@ public with sharing class GRAXEmbedSFMetaHelper {
         public String uiDisplayValue {get;set;}
 
         public GRAXFieldDefinition() {
-			isRequired = false;
-			isRichText = false;
-			isEditable = true;
-			isVisibleOnEdit = true;
-			isPolymorphic = false;
-			isNameField = false;
-            isHtmlFormatted = false;
-            referenceTo='';
-		}
+            this.isRequired = false;
+            this.isRichText = false;
+            this.isEditable = true;
+            this.isVisibleOnEdit = true;
+            this.isPolymorphic = false;
+            this.isNameField = false;
+            this.isHtmlFormatted = false;
+            this.referenceTo='';
+        }
+
+        // used to copy a field definition object
+        public GRAXFieldDefinition(GRAXFieldDefinition def) {
+            this.fName = def.fName;
+            this.fLabel = def.fLabel;
+            this.fValue = def.fValue;
+            this.fValueDatetime = def.fValueDatetime;
+            this.fValueUserDatetime = def.fValueUserDatetime;
+            this.fType = def.fType;
+            this.errorMsg = def.errorMsg;
+            this.isRequired = def.isRequired;
+            this.isRichText = def.isRichText;
+            this.isEditable = def.isEditable;
+            this.isVisibleOnEdit = def.isVisibleOnEdit;
+            this.isPolymorphic = def.isPolymorphic;
+            this.isNameField = def.isNameField;
+            this.isHtmlFormatted = def.isHtmlFormatted;
+            this.relationshipName = def.relationshipName;
+            this.referenceTo = def.referenceTo;
+            this.uiDisplayValue = def.uiDisplayValue;
+        }
     }
 }
