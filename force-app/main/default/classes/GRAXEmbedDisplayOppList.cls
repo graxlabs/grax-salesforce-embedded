@@ -24,7 +24,7 @@ public with sharing class GRAXEmbedDisplayOppList {
         this.objectName = 'Opportunity';
 
         GRAXEmbedUIHelper.PopulateFilters filters = new GRAXEmbedUIHelper.PopulateFilters();
-        filters.deleteSource = 'grax';
+        filters.deleteSource = 'any';
         filters.replaceReferencesWithNames = new Set<String>{'AccountId'};
 
         // Query for Opportunity records with any delete source. Replace the account id field with the name of the related account.
