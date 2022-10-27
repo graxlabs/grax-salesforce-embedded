@@ -10,33 +10,33 @@
       <apex:pageBlock title="{!objectName} ({!recordCount} Records)" id="pgcf">
       <apex:pageBlockTable value="{!recordData}" var="recordIndex">
           <apex:column headerValue="{!objectName} Id">
-              <apex:outputLink value="{!'/' + recordData[recordIndex]['Id'].fValue}" target='_parent'>
-                {!recordData[recordIndex]['Id'].fValue}
-              </apex:outputLink>
-              <apex:outputLink value="{!urlBase + '/search?embed=true&autologin=true&id=' + recordData[recordIndex]['Id'].fValue}" target='_parent'>
-                [GRAX]
-              </apex:outputLink>
-              <apex:outputLink value="/apex/GRAXEmbedDisplayRecord?id={!recordData[recordIndex]['Id'].fValue}" target='_parent'>
-                [APEX]
-              </apex:outputLink>
-            </apex:column>
-            <apex:column headerValue="Stage Name">
-              {!recordData[recordIndex]['StageName'].fValue}
-            </apex:column>
-            <apex:column headerValue="Name">
-              {!recordData[recordIndex]['Name'].fValue}
-            </apex:column>
-            <apex:column headerValue="Amount">
-              {!recordData[recordIndex]['Amount'].fValue}
-            </apex:column>
-            <apex:column headerValue="Close Date">
-              {!recordData[recordIndex]['CloseDate'].fValue}
-            </apex:column>
-            <apex:column headerValue="Account Id">
-              <apex:outputLink value="{!'/' + recordData[recordIndex]['AccountId'].fValue}" target='_parent'>
-                {!recordData[recordIndex]['AccountId'].uiDisplayValue}
-              </apex:outputLink>
-            </apex:column>
+            <apex:outputLink value="{!'/' + recordData[recordIndex]['Id'].fValue}" target='_parent'>
+              {!recordData[recordIndex]['Id'].fValue}
+            </apex:outputLink>
+            <apex:outputLink value="{!urlBase + '/search?embed=true&autologin=true&id=' + recordData[recordIndex]['Id'].fValue}" target='_parent'>
+              [GRAX]
+            </apex:outputLink>
+            <apex:outputLink value="/apex/GRAXEmbedDisplayRecord?id={!recordData[recordIndex]['Id'].fValue}" target='_parent'>
+              [APEX]
+            </apex:outputLink>
+          </apex:column>
+          <apex:column headerValue="Stage Name">
+            {!recordData[recordIndex]['StageName'].fValue}
+          </apex:column>
+          <apex:column headerValue="Name">
+            {!recordData[recordIndex]['Name'].fValue}
+          </apex:column>
+          <apex:column headerValue="Amount">
+            {!recordData[recordIndex]['Amount'].fValue}
+          </apex:column>
+          <apex:column headerValue="Close Date">
+            {!recordData[recordIndex]['CloseDate'].fValue}
+          </apex:column>
+          <apex:column headerValue="Account Id">
+            <apex:outputLink value="{!'/' + recordData[recordIndex]['AccountId'].fValue}" target='_parent'>
+              {!recordData[recordIndex]['AccountId'].uiDisplayValue}
+            </apex:outputLink>
+          </apex:column>
         </apex:pageBlockTable>
       </apex:pageBlock>
    </apex:form>
