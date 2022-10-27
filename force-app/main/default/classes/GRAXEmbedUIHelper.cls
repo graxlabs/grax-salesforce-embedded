@@ -6,7 +6,6 @@ public with sharing class GRAXEmbedUIHelper {
     private static GRAXEmbedSettings settings = new GRAXEmbedSettings();
     private static Map<String, String> objectPrefixMap = GRAXEmbedSFMetaHelper.getPrefixToObjectMap();
 
-
     public Map<String, Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> recordFieldDefs { get; private set; }
     // parent object info
     public String parentObjectName { get; private set; }
@@ -36,7 +35,7 @@ public with sharing class GRAXEmbedUIHelper {
         if (String.isEmpty(childObject)) {
             throw new IllegalArgumentException('child object name cannot be null in Populate');
         }
-        
+
         // Map of record ids to a map of field names to field definitions
         Map<String, Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> recordFieldDefsTemp = new Map<String, Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition>>();
 
@@ -79,7 +78,6 @@ public with sharing class GRAXEmbedUIHelper {
             Map<String, String> nameMap = new Map<String, String>();
             if (relatedRecordIDs.size() > 0) {
                 String query = String.format('SELECT Id, Name FROM {0} WHERE Id IN :relatedRecordIDs', new List<String>{referencedObject});
-                GRAXEmbedSettings.debugInfo('query: '+ fieldName);
                 List<sObject> sobjList = Database.query(query);
                 for (sObject obj : sobjList) {
                     nameMap.put(obj.Id, (String)obj.get('Name'));
