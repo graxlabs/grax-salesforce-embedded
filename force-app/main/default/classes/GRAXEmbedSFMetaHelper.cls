@@ -165,12 +165,12 @@ public with sharing class GRAXEmbedSFMetaHelper {
         public String uiDisplayValue {get;set;}
 
         public GRAXFieldDefinition() {
-			this.isRequired = false;
-			this.isRichText = false;
-			this.isEditable = true;
-			this.isVisibleOnEdit = true;
-			this.isPolymorphic = false;
-			this.isNameField = false;
+            this.isRequired = false;
+            this.isRichText = false;
+            this.isEditable = true;
+            this.isVisibleOnEdit = true;
+            this.isPolymorphic = false;
+            this.isNameField = false;
             this.isHtmlFormatted = false;
             this.referenceTo='';
 		}
