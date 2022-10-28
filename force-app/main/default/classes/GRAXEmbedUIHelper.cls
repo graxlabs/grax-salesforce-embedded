@@ -41,7 +41,11 @@ public with sharing class GRAXEmbedUIHelper {
 
         // load data from the api
         GRAXEmbedAPIAccess apiAccess = new GRAXEmbedAPIAccess();
-        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, childObject, filters.deleteSource, filters.level);
+        GRAXEmbedAPIAccess.LoadDataOptions options = new GRAXEmbedAPIAccess.LoadDataOptions();
+        options.childObject = childObject;
+        options.deleteSource = filters.deleteSource;
+        options.level = filters.level;
+        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, options);
         List<Object> results = (List<Object>)JSON.deserializeUntyped(response);
         for (Object entry: results) {
             // https://apidocs.grax.io/#5672fdc3-496b-44c4-84c6-01deb366e750
@@ -102,7 +106,9 @@ public with sharing class GRAXEmbedUIHelper {
         Set<String> objects = new Set<String>();
         // load data from the api
         GRAXEmbedAPIAccess apiAccess = new GRAXEmbedAPIAccess();
-        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, null, null, level);
+        GRAXEmbedAPIAccess.LoadDataOptions options = new GRAXEmbedAPIAccess.LoadDataOptions();
+        options.level = level;
+        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, options);
         List<Object> results = (List<Object>)JSON.deserializeUntyped(response);
         for (Object entry: results) {
             // https://apidocs.grax.io/#5672fdc3-496b-44c4-84c6-01deb366e750

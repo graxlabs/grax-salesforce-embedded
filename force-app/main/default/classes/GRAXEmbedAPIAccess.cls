@@ -11,6 +11,12 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 	private GRAXEmbedSettings gx = new GRAXEmbedSettings();
 	private String externalAPIEndpointStatic;
 
+    public class LoadDataOptions {
+        public String childObject;
+        public String deleteSource;
+        public Integer level;
+    }
+
     /**
      * Use this method to load child data that is archived, deleted, or both.
      * <p>
@@ -22,21 +28,20 @@ global virtual with sharing class GRAXEmbedAPIAccess {
      * @param  level integer identifying the level children should reside in
      * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
      */
-
-    public String loadData(String parentObject, String recordID, String childObject, String deleteSource, Integer level){
+    public String loadData(String parentObject, String recordID, LoadDataOptions options){
         String returnValue = '';
         String responseBody = '';
 		String fullAPIPath = gx.AppURL + '/app/objects/' + parentObject + '/records/' + recordID + '/latest/graph?includeFields=true';
-        if (!String.isEmpty(childObject)){
-            fullAPIPath += '&childObject=' + childObject;
+        if (!String.isEmpty(options.childObject)){
+            fullAPIPath += '&childObject=' + options.childObject;
         }
 
-        if (!String.isEmpty(deleteSource)){
-            fullAPIPath += '&deleteSource=' + deleteSource;
+        if (!String.isEmpty(options.deleteSource)){
+            fullAPIPath += '&deleteSource=' + options.deleteSource;
         }
 
-        if (level != null) {
-            fullAPIPath += '&level=' + level;
+        if (options.level != null) {
+            fullAPIPath += '&level=' + options.level;
         }
 
         if (!Test.isRunningTest()){

@@ -16,8 +16,8 @@ public with sharing class GRAXEmbedDisplayRecord {
         this.childrenData = new Map<String, Map<String, Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition>>>();
 
         // Get query parameters
-        String parentRecordID = ApexPages.currentPage().getParameters().get('id');
-        this.parentObjectName = Id.valueOf(parentRecordID).getSobjectType().getDescribe().getName();
+        Id parentRecordID = Id.valueOf(ApexPages.currentPage().getParameters().get('id'));
+        this.parentObjectName = parentRecordID.getSobjectType().getDescribe().getName();
 
         // A new helper instance, linked to the parent record, to be reused for each API call.
         GRAXEmbedUIHelper helper = new GRAXEmbedUIHelper(parentRecordID);
