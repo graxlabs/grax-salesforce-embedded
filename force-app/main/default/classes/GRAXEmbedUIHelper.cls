@@ -12,25 +12,22 @@ public with sharing class GRAXEmbedUIHelper {
     public String parentRecordID { get; private set; }
 
     // Pass in delete source if you only want to display Deleted=salesforce or Archived=grax 
-    public GRAXEmbedUIHelper(String parentID, String parentObjectName) {
+    public GRAXEmbedUIHelper(String parentID) {
         if (String.isEmpty(parentID)) {
             throw new IllegalArgumentException('parent record ID cannot be null in GRAXEmbedUIHelper');
         }
         this.parentRecordID = parentID;
-
-        if (String.isEmpty(parentObjectName)) {
-            throw new IllegalArgumentException('parent object name cannot be null in GRAXEmbedUIHelper');
-        }
-        this.parentObjectName = parentObjectName;
+        this.parentObjectName = Id.valueOf(parentID).getSobjectType().getDescribe().getName();
     }
 
-    public class PopulateFilters {
+    public class Filters {
         public String deleteSource { get; set; }
         // TODO: public Set<String> fieldNames { get; set; }
         public Set<String> replaceReferencesWithNames { get; set; }
+        public Integer level { get; set; }
     }
 
-    public Map<String, Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> Populate(String childObject, PopulateFilters filters) {
+    public Map<String, Map<String, GRAXEmbedSFMetaHelper.GRAXFieldDefinition>> Populate(String childObject, Filters filters) {
         // childObject is a required filter
         if (String.isEmpty(childObject)) {
             throw new IllegalArgumentException('child object name cannot be null in Populate');
@@ -44,7 +41,7 @@ public with sharing class GRAXEmbedUIHelper {
 
         // load data from the api
         GRAXEmbedAPIAccess apiAccess = new GRAXEmbedAPIAccess();
-        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, childObject, filters.deleteSource);
+        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, childObject, filters.deleteSource, filters.level);
         List<Object> results = (List<Object>)JSON.deserializeUntyped(response);
         for (Object entry: results) {
             // https://apidocs.grax.io/#5672fdc3-496b-44c4-84c6-01deb366e750
@@ -56,47 +53,63 @@ public with sharing class GRAXEmbedUIHelper {
 
         // replace all chosen reference fields with the name of related record
         // this will break if the record referred to by a field is deleted from salesforce
-        for (String fieldName : filters.replaceReferencesWithNames) {
-            // Track the referenced object for use in query
-            String referencedObject = '';
-            // Assemble a list of all referenced records
-            Set<String> relatedRecordIDs = new Set<String>();
-            for (String recordID : recordFieldDefsTemp.keySet()) {
-                // This first get is protected by being in a keySet loop
-                GRAXEmbedSFMetaHelper.GRAXFieldDefinition fieldDef = recordFieldDefsTemp.get(recordID).get(fieldName);
-                // if not a reference field, there is no referenced record to look for
-                if (fieldDef?.referenceTo != null) {
-                    // Keeping track of only a single object name may be susceptible to change in schema
-                    // if an org is able to change the object referred to by a field. Older versions may contain
-                    // different "referred to" objects than new ones, and that will lead to omission 
-                    // of names from the table based on whichever object is "last seen" in this loop.
-                    referencedObject = fieldDef.referenceTo;
-                    relatedRecordIDs.add(fieldDef.fValue);
+        if (filters.replaceReferencesWithNames != null) {
+            for (String fieldName : filters.replaceReferencesWithNames) {
+                // Track the referenced object for use in query
+                String referencedObject = '';
+                // Assemble a list of all referenced records
+                Set<String> relatedRecordIDs = new Set<String>();
+                for (String recordID : recordFieldDefsTemp.keySet()) {
+                    // This first get is protected by being in a keySet loop
+                    GRAXEmbedSFMetaHelper.GRAXFieldDefinition fieldDef = recordFieldDefsTemp.get(recordID).get(fieldName);
+                    // if not a reference field, there is no referenced record to look for
+                    if (fieldDef?.referenceTo != null) {
+                        // Keeping track of only a single object name may be susceptible to change in schema
+                        // if an org is able to change the object referred to by a field. Older versions may contain
+                        // different "referred to" objects than new ones, and that will lead to omission 
+                        // of names from the table based on whichever object is "last seen" in this loop.
+                        referencedObject = fieldDef.referenceTo;
+                        relatedRecordIDs.add(fieldDef.fValue);
+                    }
                 }
-            }
-            // Get the names for all referenced records from salesforce
-            Map<String, String> nameMap = new Map<String, String>();
-            if (relatedRecordIDs.size() > 0) {
-                String query = String.format('SELECT Id, Name FROM {0} WHERE Id IN :relatedRecordIDs', new List<String>{referencedObject});
-                List<sObject> sobjList = Database.query(query);
-                for (sObject obj : sobjList) {
-                    nameMap.put(obj.Id, (String)obj.get('Name'));
+                // Get the names for all referenced records from salesforce
+                Map<String, String> nameMap = new Map<String, String>();
+                if (relatedRecordIDs.size() > 0) {
+                    String query = String.format('SELECT Id, Name FROM {0} WHERE Id IN :relatedRecordIDs', new List<String>{referencedObject});
+                    List<sObject> sobjList = Database.query(query);
+                    for (sObject obj : sobjList) {
+                        nameMap.put(obj.Id, (String)obj.get('Name'));
+                    }
                 }
-            }
-            // Overwrite the labels for all impacted fields
-            for (String recordID : recordFieldDefsTemp.keySet()) {
-                // This first get is protected by being in a keySet loop
-                GRAXEmbedSFMetaHelper.GRAXFieldDefinition fieldDef = recordFieldDefsTemp.get(recordID).get(fieldName);
-                // if not a reference field, there is no referenced record to look for
-                if (fieldDef?.referenceTo != null) {
-                    fieldDef.uiDisplayValue = nameMap.get(fieldDef.fValue);
-                    recordFieldDefsTemp.get(recordID).put(fieldName, fieldDef);
+                // Overwrite the labels for all impacted fields
+                for (String recordID : recordFieldDefsTemp.keySet()) {
+                    // This first get is protected by being in a keySet loop
+                    GRAXEmbedSFMetaHelper.GRAXFieldDefinition fieldDef = recordFieldDefsTemp.get(recordID).get(fieldName);
+                    // if not a reference field, there is no referenced record to look for
+                    if (fieldDef?.referenceTo != null) {
+                        fieldDef.uiDisplayValue = nameMap.get(fieldDef.fValue);
+                        recordFieldDefsTemp.get(recordID).put(fieldName, fieldDef);
+                    }
                 }
             }
         }
 
         // after all processing and decoration, update the actual record property to prevent blips/stutters
         return recordFieldDefsTemp;
+    }
+
+    public Set<String> ListChildObjects(Integer level) {
+        Set<String> objects = new Set<String>();
+        // load data from the api
+        GRAXEmbedAPIAccess apiAccess = new GRAXEmbedAPIAccess();
+        String response = apiAccess.loadData(this.parentObjectName, this.parentRecordID, null, null, level);
+        List<Object> results = (List<Object>)JSON.deserializeUntyped(response);
+        for (Object entry: results) {
+            // https://apidocs.grax.io/#5672fdc3-496b-44c4-84c6-01deb366e750
+            Map<String, Object> record = (Map<String, Object>)entry;
+            objects.add((String)record.get('object'));
+        }
+        return objects;
     }
 
     public static String webappURL() {

@@ -1,0 +1,62 @@
+<!--
+  @description       : GRAX Embedded Record Display with Child List Sample Page
+  @author            : product@grax.com
+  @group             : GRAX Product Development
+  @last modified on  : 09-08-2022
+  @last modified by  : product@grax.com
+-->
+<apex:page controller="GRAXEmbedDisplayRecord">
+<apex:form >
+  <apex:pageBlock title="{!parentObjectName}" id="c">
+    <apex:pageBlockTable value="{!parentRecordData}" var="d">
+      <apex:column headerValue="Field Label">
+        {!parentRecordData[d].fLabel}
+      </apex:column>
+      <apex:column headerValue="Field Value">
+        <apex:outputText value="{!parentRecordData[d].fValue}" rendered="{!((parentRecordData[d].fType=='STRING' || parentRecordData[d].fType=='TEXTAREA' || parentRecordData[d].fType=='PICKLIST') && parentRecordData[d].fValue!='' && parentRecordData[d].fValue!=null) }">
+        </apex:outputText>
+        <apex:outputLink value="{!'/' + parentRecordData[d].fValue}" rendered="{!((parentRecordData[d].fType=='ID' || parentRecordData[d].fType=='REFERENCE') && parentRecordData[d].fValue!='' && parentRecordData[d].fValue!=null) }">
+          {!parentRecordData[d].fValue}
+        </apex:outputLink>
+        <apex:outputLink value="{!urlBase + '/search?id=' + parentRecordData[d].fValue}" rendered="{!((parentRecordData[d].fType=='ID' || parentRecordData[d].fType=='REFERENCE') && parentRecordData[d].fValue!='' && parentRecordData[d].fValue!=null) }">
+        [GRAX]
+        </apex:outputLink>
+        <apex:outputLink value="{!parentRecordData[d].fValue}" rendered="{!((parentRecordData[d].fType=='URL') && parentRecordData[d].fValue!='' && parentRecordData[d].fValue!=null) }">
+          {!parentRecordData[d].fValue}
+        </apex:outputLink>
+        <apex:outputText  value="{0,date,M/dd/yyyy hh:mm:ss}" rendered="{!((parentRecordData[d].fType=='DATETIME') && parentRecordData[d].fValue!='' && parentRecordData[d].fValue!=null) }">
+          <apex:param value="{!parentRecordData[d].fValueUserDatetime}" /> 
+        </apex:outputText>
+      </apex:column>
+    </apex:pageBlockTable>
+  </apex:pageBlock>
+
+  <apex:repeat value="{!childrenData}" var="objectName" id="theRepeat">
+    <apex:pageBlock title="{!objectName}" id="pgcf">
+      <apex:pageBlockTable value="{!childrenData[objectName]}" var="record">
+        <apex:column style="width:25%" headerValue="{!objectName} Id">
+          <apex:outputLink value="{!'/' + childrenData[objectName][record]['Id'].fValue}">
+            {!childrenData[objectName][record]['Id'].fValue}
+          </apex:outputLink>
+          <apex:outputLink value="{!urlBase + '/search?embed=true&autologin=true&id=' + childrenData[objectName][record]['Id'].fValue}">
+            [GRAX]
+          </apex:outputLink>
+        </apex:column>
+        <apex:column style="width:25%" headerValue="Name">
+          {!childrenData[objectName][record]['Name'].fValue}
+        </apex:column>
+        <apex:column style="width:25%" headerValue="Created At">
+          <apex:outputText  value="{0,date,M/dd/yyyy hh:mm:ss}">
+            <apex:param value="{!childrenData[objectName][record]['CreatedDate'].fValueUserDatetime}" /> 
+          </apex:outputText>
+        </apex:column>
+        <apex:column style="width:25%" headerValue="Last Modified At">
+          <apex:outputText  value="{0,date,M/dd/yyyy hh:mm:ss}">
+            <apex:param value="{!childrenData[objectName][record]['LastModifiedDate'].fValueUserDatetime}" /> 
+          </apex:outputText>
+        </apex:column>
+      </apex:pageBlockTable>
+    </apex:pageBlock>
+  </apex:repeat>
+ </apex:form>
+</apex:page>

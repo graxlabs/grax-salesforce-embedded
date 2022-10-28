@@ -12,19 +12,6 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 	private String externalAPIEndpointStatic;
 
     /**
-     * Call this method to load the parent object and/or children using the GRAX graph API. This will load ALL data in the graph for the parent.
-     * <p>
-     *
-     * @param  objName  Salesforce Object Name (ex Account)
-     * @param  recordId Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
-     * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
-     * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
-     */
-    public String loadData(String objName, String recordId, String ChildObject){
-        return loadData(objName, recordId, ChildObject, null);
-    }
-
-    /**
      * Use this method to load child data that is archived, deleted, or both.
      * <p>
      *
@@ -32,19 +19,24 @@ global virtual with sharing class GRAXEmbedAPIAccess {
      * @param  recordID Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
      * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
      * @param  deleteSource salesforce, grax, any (deleted salesforce OR grax)
+     * @param  level integer identifying the level children should reside in
      * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
      */
 
-    public String loadData(String parentObject, String recordID, String childObject, String deleteSource){
+    public String loadData(String parentObject, String recordID, String childObject, String deleteSource, Integer level){
         String returnValue = '';
         String responseBody = '';
-		String fullAPIPath = gx.AppURL + '/app/objects/' + parentObject + '/records/' + recordID + '/latest/graph?includeFields=true&level=1';
+		String fullAPIPath = gx.AppURL + '/app/objects/' + parentObject + '/records/' + recordID + '/latest/graph?includeFields=true';
         if (!String.isEmpty(childObject)){
             fullAPIPath += '&childObject=' + childObject;
         }
 
         if (!String.isEmpty(deleteSource)){
             fullAPIPath += '&deleteSource=' + deleteSource;
+        }
+
+        if (level != null) {
+            fullAPIPath += '&level=' + level;
         }
 
         if (!Test.isRunningTest()){
