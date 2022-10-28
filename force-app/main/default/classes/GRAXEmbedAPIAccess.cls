@@ -68,7 +68,6 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 		HttpRequest req = new HttpRequest();
 		req.setTimeout(120000);
 		req.setMethod(httpMethod);
-		req.setHeader('Authorization', 'Bearer');
 		req.setHeader('Content-Type', 'application/json');
 		req.setHeader('licensetoken', gx.LicenseToken);
 		req.setHeader('authorizationToken', gx.ApiToken);
