@@ -7,39 +7,37 @@
 -->
 <apex:page standardController="Account" extensions="GRAXEmbedDisplayOppList">
   <apex:form >
-      <apex:repeat value="{!graxUIHelper.childObjects}" var="childObject" id="theRepeat">
-      <apex:pageBlock title="{!childObject} ({!numberofRecords} Records)" id="pgcf" rendered="{!graxUIHelper.childObjectsFieldDef != null && childObject=='Opportunity'}">
-      <apex:pageBlockTable value="{!graxUIHelper.childObjectsFieldDef[childObject]}" var="childObjectList">
-          <apex:column headerValue="{!childObject} Id">
-              <apex:outputLink value="{!'/' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}" target='_parent'>
-                {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}
-              </apex:outputLink>
-              <apex:outputLink value="{!graxUIHelper.graxSettings.webURL + '/search?embed=true&autologin=true&id=' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}" target='_parent'>
-                [GRAX]
-              </apex:outputLink>
-              <apex:outputLink value="/apex/GRAXEmbedDisplayRecord?id={!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Id'].fValue}" target='_parent'>
-                [APEX]
-              </apex:outputLink>
-            </apex:column>
-            <apex:column headerValue="Stage Name">
-              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['StageName'].fValue}
-            </apex:column>
-            <apex:column headerValue="Name">
-              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Name'].fValue}
-            </apex:column>
-            <apex:column headerValue="Amount">
-              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['Amount'].fValue}
-            </apex:column>
-            <apex:column headerValue="Close Date">
-              {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['CloseDate'].fValue}
-            </apex:column>
-            <apex:column headerValue="Account Id">
-              <apex:outputLink value="{!'/' + graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['AccountId'].fValue}" target='_parent'>
-                {!graxUIHelper.childObjectsFieldDef[childObject][childObjectList]['AccountId'].uiDisplayValue}
-              </apex:outputLink>
-            </apex:column>
+      <apex:pageBlock title="{!objectName} ({!recordCount} Records)" id="pgcf">
+      <apex:pageBlockTable value="{!recordData}" var="recordIndex">
+          <apex:column headerValue="{!objectName} Id">
+            <apex:outputLink value="{!'/' + recordData[recordIndex]['Id'].fValue}" target='_parent'>
+              {!recordData[recordIndex]['Id'].fValue}
+            </apex:outputLink>
+            <apex:outputLink value="{!urlBase + '/search?embed=true&autologin=true&id=' + recordData[recordIndex]['Id'].fValue}" target='_parent'>
+              [GRAX]
+            </apex:outputLink>
+            <apex:outputLink value="/apex/GRAXEmbedDisplayRecord?id={!recordData[recordIndex]['Id'].fValue}" target='_parent'>
+              [APEX]
+            </apex:outputLink>
+          </apex:column>
+          <apex:column headerValue="Stage Name">
+            {!recordData[recordIndex]['StageName'].fValue}
+          </apex:column>
+          <apex:column headerValue="Name">
+            {!recordData[recordIndex]['Name'].fValue}
+          </apex:column>
+          <apex:column headerValue="Amount">
+            {!recordData[recordIndex]['Amount'].fValue}
+          </apex:column>
+          <apex:column headerValue="Close Date">
+            {!recordData[recordIndex]['CloseDate'].fValue}
+          </apex:column>
+          <apex:column headerValue="Account Id">
+            <apex:outputLink value="{!'/' + recordData[recordIndex]['AccountId'].fValue}" target='_parent'>
+              {!recordData[recordIndex]['AccountId'].uiDisplayValue}
+            </apex:outputLink>
+          </apex:column>
         </apex:pageBlockTable>
       </apex:pageBlock>
-      </apex:repeat>
    </apex:form>
   </apex:page>

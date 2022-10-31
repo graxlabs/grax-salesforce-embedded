@@ -11,17 +11,10 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 	private GRAXEmbedSettings gx = new GRAXEmbedSettings();
 	private String externalAPIEndpointStatic;
 
-    /**
-     * Call this method to load the parent object and/or children using the GRAX graph API. This will load ALL data in the graph for the parent.
-     * <p>
-     *
-     * @param  objName  Salesforce Object Name (ex Account)
-     * @param  recordId Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
-     * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
-     * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
-     */
-    public String loadData(String objName, String recordId, String ChildObject){
-        return loadData(objName, recordId, ChildObject, null);
+    public class LoadDataOptions {
+        public String childObject;
+        public String deleteSource;
+        public Integer level;
     }
 
     /**
@@ -29,22 +22,26 @@ global virtual with sharing class GRAXEmbedAPIAccess {
      * <p>
      *
      * @param  objName  Salesforce Object Name (ex Account)
-     * @param  recordId Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
+     * @param  recordID Salesforce Object Id (ex. 0018V00002Q6mbSQAR)
      * @param  ChildObject If you only want the child object returned from the parent object (ex Opportunity)
      * @param  deleteSource salesforce, grax, any (deleted salesforce OR grax)
+     * @param  level integer identifying the level children should reside in
      * @return JSON document from calling the <A href="https://apidocs.grax.io/#3711333e-e5d3-4555-8ca1-b4e6ce7141db">GRAX Graph API</a>
      */
-
-    public String loadData(String objName, String recordId, String ChildObject, String deleteSource){
+    public String loadData(String parentObject, String recordID, LoadDataOptions options){
         String returnValue = '';
         String responseBody = '';
-		String fullAPIPath = gx.AppURL + '/app/objects/' + objName + '/records/' + recordId + '/latest/graph?includeFields=true&level=1';
-        if (ChildObject!=null && ChildObject!=''){
-            fullAPIPath += '&childObject=' + ChildObject;
+		String fullAPIPath = gx.AppURL + '/app/objects/' + parentObject + '/records/' + recordID + '/latest/graph?includeFields=true';
+        if (!String.isEmpty(options.childObject)){
+            fullAPIPath += '&childObject=' + options.childObject;
         }
 
-        if (deleteSource!=null){
-            fullAPIPath += '&deleteSource=' + deleteSource;
+        if (!String.isEmpty(options.deleteSource)){
+            fullAPIPath += '&deleteSource=' + options.deleteSource;
+        }
+
+        if (options.level != null) {
+            fullAPIPath += '&level=' + options.level;
         }
 
         if (!Test.isRunningTest()){
@@ -71,7 +68,6 @@ global virtual with sharing class GRAXEmbedAPIAccess {
 		HttpRequest req = new HttpRequest();
 		req.setTimeout(120000);
 		req.setMethod(httpMethod);
-		req.setHeader('Authorization', 'Bearer');
 		req.setHeader('Content-Type', 'application/json');
 		req.setHeader('licensetoken', gx.LicenseToken);
 		req.setHeader('authorizationToken', gx.ApiToken);
