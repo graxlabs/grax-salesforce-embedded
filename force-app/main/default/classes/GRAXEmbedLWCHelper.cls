@@ -1,3 +1,6 @@
+/**
+ * Helper class for the GRAX Embedded LWC
+*/
 Global with sharing class GRAXEmbedLWCHelper {
     public GRAXEmbedLWCHelper() {
     }
