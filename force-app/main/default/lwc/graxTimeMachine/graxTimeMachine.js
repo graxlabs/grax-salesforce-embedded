@@ -20,7 +20,7 @@ export default class graxEmbedded extends NavigationMixin(LightningElement) {
   @track lwcPayload = null;
 
   async queryGRAX(){
-    return await loadLWCPaylod({objectName:this.sObject,fields:this.fields,objectId:this.recordId,enforceRowSecurity:!this.ignoreRecordLevelSecurity});
+    return await loadLWCPaylod({objectName:this.objectApiName,fields:'',objectId:this.recordId,enforceRowSecurity:false});
   }
 
   async connectedCallback() { 
