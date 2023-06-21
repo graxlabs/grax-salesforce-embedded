@@ -1,7 +1,6 @@
-import { LightningElement, api, wire, track } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from "lightning/navigation";
 import loadLWCPaylod from '@salesforce/apex/GRAXEmbedLWCHelper.loadLWCPaylod';
-import TIME_ZONE  from '@salesforce/i18n/timeZone';
 
 export default class graxEmbedded extends NavigationMixin(LightningElement) {
   @api flexipageRegionWidth;

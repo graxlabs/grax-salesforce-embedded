@@ -1,7 +1,6 @@
-import { LightningElement, api, wire, track } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from "lightning/navigation";
 import loadLWCPaylod from '@salesforce/apex/GRAXEmbedLWCHelper.loadLWCPaylod';
-import TIME_ZONE  from '@salesforce/i18n/timeZone';
 
 export default class graxEmbedded extends NavigationMixin(LightningElement) {
   @api flexipageRegionWidth;
@@ -32,14 +31,14 @@ export default class graxEmbedded extends NavigationMixin(LightningElement) {
   getParams(){
     var paramFields = this.fields;
     var retVal = `autologin=true&includeFields=true&fields=${encodeURIComponent(paramFields)}`;
-    if (this.title != "" && !this.title!=null && this.title!=undefined) {
+    if (this.title !== "" && !this.title!==null && this.title!==undefined) {
       retVal+=`&title=${encodeURIComponent(this.title)}`;
     }
-    if (this.recordsPerPage!=null && this.recordsPerPage > 0){
+    if (this.recordsPerPage!==null && this.recordsPerPage > 0){
       retVal+=`&perPage=${this.recordsPerPage}`;
     }
     // If we add additional parameters we can still use existing LWC 
-    if (this.additionalParams != "" && this.additionalParams!=null && this.additionalParams!=undefined) {
+    if (this.additionalParams !== "" && this.additionalParams!==null && this.additionalParams!==undefined) {
       retVal+='&' + this.additionalParams;
     }
     return retVal;
