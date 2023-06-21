@@ -32,7 +32,7 @@ export default class graxEmbedded extends NavigationMixin(LightningElement) {
 
   async connectedCallback() {
     this.lwcPayload = await this.queryGRAX();
-    if (viewSelection=='Time Machine'){
+    if (viewSelection == 'Time Machine'){
       this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/latest/versions?embedded=true&${this.getParams()}`;
     } else{
       this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/children?embedded=true&${this.getParams()}`;
