@@ -23,10 +23,15 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
    ```
 
 4. Login to Salesforce
-
+    - Login to an existing Salesforce
     ```
        sfdx auth:web:login -a GRAXDev -r https://test.salesforce.com
     ```   
+    - Create a scratch org - Please refer to how to utilize [Salesforce Scratch Orgs](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs.htm)
+    ```
+       sfdx force:org:create --definitionfile config/project-scratch-def.json --durationdays 30 --setalias GRAXDev -v DevHub
+       sfdx force:user:password:generate -u GRAXDev
+    ``` 
 
 4. Enable "Set Audit Fields upon Record Creation" and "Update Records with Inactive Owners" User Permissions
     If you do not do this pushing the permission sets will fail.
@@ -42,10 +47,8 @@ Below assumes you have knowledge of Salesforce Development, SFDX, and release pr
        ```
        sfdx force:source:deploy -p force-app/main/default -u GRAXDev
        ```
-   - Create & Push to Scratch Org - Please refer to how to utilize [Salesforce Scratch Orgs](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs.htm)
+   - Push to Scratch Org 
        ```
-       sfdx force:org:create --definitionfile config/project-scratch-def.json --durationdays 30 --setalias GRAXDev -v DevHub
-       sfdx force:user:password:generate -u GRAXDev
        sfdx force:source:push -u GRAXDev
        ```
 

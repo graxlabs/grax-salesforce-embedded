@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+  <apiVersion>52.0</apiVersion>
+  <masterLabel>GRAX Time Machine</masterLabel>
+  <isExposed>true</isExposed>
+  <targets>
+    <target>lightning__RecordPage</target>
+    <target>lightningCommunity__Page</target>
+    <target>lightningCommunity__Default</target>
+  </targets>
+  <targetConfigs>
+    <targetConfig targets="lightning__RecordPage">
+      <property description="Override Title" label="Override Title" name="title" required="false" type="String" default="" />
+      <property description="iFrame Size" label="iFrame px Size" name="iFrameSize" required="true" type="Integer" default="700" />
+      <property description="Records Per Page" label="Records Per Page" name="recordsPerPage" required="true" type="Integer" default="50" />
+      <property description="Additional Parameters if needed refer to documentation." label="Additional Parameters" name="additionalParams" required="false" type="String" default="" />
+    </targetConfig>
+    <targetConfig targets="lightningCommunity__Default">
+      <property description="Override Title" label="Override Title" name="title" required="false" type="String" default="" />
+      <property description="iFrame Size" label="iFrame px Size" name="iFrameSize" required="true" type="Integer" default="700" />
+      <property description="Records Per Page" label="Records Per Page" name="recordsPerPage" required="true" type="Integer" default="50" />
+      <property description="Additional Parameters if needed refer to documentation." label="Additional Parameters" name="additionalParams" required="false" type="String" default="" />
+    </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>
