@@ -16,6 +16,7 @@ export default class graxEmbedded extends NavigationMixin(LightningElement) {
 
   @api fields;
   @api setSelection;
+  @api viewSelection;
 
   @api childLevels = 1;
   @api ignoreRecordLevelSecurity = false;
@@ -31,7 +32,11 @@ export default class graxEmbedded extends NavigationMixin(LightningElement) {
 
   async connectedCallback() {
     this.lwcPayload = await this.queryGRAX();
-    this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/children?embedded=true&${this.getParams()}`;
+    if (viewSelection=='Time Machine'){
+      this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/latest/versions?embedded=true&${this.getParams()}`;
+    } else{
+      this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/children?embedded=true&${this.getParams()}`;
+    }
   }
 
   // Embedded Parameters
