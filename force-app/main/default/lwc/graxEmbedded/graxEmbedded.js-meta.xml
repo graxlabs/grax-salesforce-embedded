@@ -14,7 +14,6 @@
       <property description="CSV of object fields, e.g. Name,Number" label="Related Object Fields" name="fields" required="true" type="String" default="Id,Name,CreatedDate,LastModifiedDate"/>
       <property description="Override Title" label="Override Title" name="title" required="false" type="String" default="" />
 
-      <property description="Choose View" label="Choose View" name="viewSelection" required="true" type="String" datasource="List Display,Time Machine" default="List Display"/>
       <property description="Choose Data" label="Data Set Selection" name="setSelection" required="true" type="String" datasource="All Data,Archived Data,Deleted Data,Archived + Deleted Data" default="All Data"/>
 
       <property description="iFrame Size" label="iFrame px Size" name="iFrameSize" required="true" type="Integer" default="475" />
@@ -30,7 +29,6 @@
       <property description="CSV of object fields, e.g. Name,Number" label="Related Object Fields" name="fields" required="true" type="String" default="Id,Name,CreatedDate,LastModifiedDate"/>
       <property description="Override Title" label="Override Title" name="title" required="false" type="String" default="" />
       
-      <property description="Choose View" label="Choose View" name="viewSelection" required="true" type="String" datasource="List Display,Time Machine" default="List Display"/>
       <property description="Choose Data" label="Data Set Selection" name="setSelection" required="true" type="String" datasource="All Data,Archived Data,Deleted Data,Archived + Deleted Data" default="All Data"/>
 
       <property description="iFrame Size" label="iFrame px Size" name="iFrameSize" required="true" type="Integer" default="475" />
