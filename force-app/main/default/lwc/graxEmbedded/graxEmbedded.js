@@ -30,7 +30,7 @@ export default class graxEmbedded extends NavigationMixin(LightningElement) {
 
   async connectedCallback() {
     this.lwcPayload = await this.queryGRAX();
-    this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/latest/versions?embedded=true&${this.getParams()}`;
+    this.iFrameUrl = `${this.lwcPayload.apiPath}/web/objects/${this.objectApiName}/records/${this.recordId}/children?embedded=true&${this.getParams()}`;
   }
 
   // Embedded Parameters
