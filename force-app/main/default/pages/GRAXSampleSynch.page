@@ -1,11 +1,17 @@
 <apex:page controller="GRAXSampleSynch" sidebar="true" showHeader="true">
 <apex:form >
   <table>
-      <tr><th>Object Name</th><td><apex:inputtext value="{!objectname}"/></td></tr>
-      <tr><th>Remote Object ID</th><td><apex:inputtext value="{!remoteobjectid}"/></td></tr>
-      <tr><th>Local Object ID</th><td><apex:inputtext value="{!localobjectid}"/></td></tr>
-      <tr><td colspan="2"><apex:commandbutton value="click" action="{!show}" rerender="cdFilemap1" /></td></tr>
-      <tr>
+    <tr>
+        <td colspan="2">
+            <table>
+                <tr><th>Object Name</th><td><apex:inputtext value="{!objectname}"  style="width:400px"/></td></tr>
+                <tr><th>Remote Object ID</th><td><apex:inputtext value="{!remoteobjectid}"  style="width:400px" /></td></tr>
+                <tr><th>Local Object ID</th><td><apex:inputtext value="{!localobjectid}"  style="width:400px" /></td></tr>
+                <tr><td colspan="2"><apex:commandbutton value="click" action="{!show}"  style="width:400px" /></td></tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
         <td colspan="2">
         <table>
             <tr>
