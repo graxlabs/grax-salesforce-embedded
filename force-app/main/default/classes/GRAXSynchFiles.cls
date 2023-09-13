@@ -19,12 +19,12 @@ public with sharing class GRAXSynchFiles extends GRAXEmbedAPIAccess{
         public Blob fileContents {get;set;}
         public Id NewContentDocumentId {get;set;}
     }
-    public string filelistRaw {get;set;}
-    public List<filestruct> fileList {get;set;}
-
-    public id localparentid {get;set;}
-    public id remoteparentid {get;set;}
-    public String objectname {get;set;}
+    
+    private id localparentid;
+    private id remoteparentid;
+    private String objectname;
+    private List<filestruct> fileList {get;set;}
+    private string filelistRaw {get;set;}
     
     public GRAXSynchFiles(String objectname, id remoteparentid,id localparentid) {
         this.objectname = objectname;
