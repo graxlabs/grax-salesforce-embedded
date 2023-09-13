@@ -63,6 +63,50 @@ global virtual with sharing class GRAXEmbedAPIAccess {
         return returnValue;
     }
 
+    public string loadFileList(String parentObject, String recordID)
+    {
+        String returnValue = '';
+        String responseBody = '';
+        String fullAPIPath = gx.AppURL + '/api/v1/salesforce/fromAuth/objects/' + parentObject + '/records/' + recordID + '/files';
+        //'/app/objects/' + parentObject + '/records/' + recordID + '/latest/graph?includeFields=true';
+        if (!Test.isRunningTest()){
+            try{
+                GRAXEmbedSettings.debugInfo('fullAPIPath:' + fullAPIPath);
+                Long beforeAPICall = Datetime.now().getTime();
+                HttpResponse res = this.apiCallOut('GET',fullAPIPath,'',false);
+                responseTimeMS = Datetime.now().getTime() - beforeAPICall; // Milliseconds
+                responseBody = res.getBody();
+                returnValue = responseBody;
+                GRAXEmbedSettings.debugInfo('LoadData Finished ' + responseTimeMS + ' MS');
+            } catch (Exception ex) {
+                GRAXEmbedSettings.debugInfo('error calling GRAX API : '  + ex.getMessage());
+                GRAXEmbedSettings.debugInfo('responseBody: ' + responseBody);
+                GRAXEmbedSettings.debugInfo('fullAPIPath: ' + fullAPIPath);
+            }
+        }
+        return returnValue;
+    }
+
+    public Blob loadFile(String apiPath){
+        HttpResponse res;
+        Blob fileContents = null;
+        String fullAPIPath = gx.AppURL + apiPath;
+        if (!Test.isRunningTest()){
+            try{
+                GRAXEmbedSettings.debugInfo('loadFile:' + fullAPIPath);
+                Long beforeAPICall = Datetime.now().getTime();
+                res = this.apiCallOut('GET',fullAPIPath,'',false);
+                fileContents = res.getBodyAsBlob();
+                responseTimeMS = Datetime.now().getTime() - beforeAPICall; // Milliseconds
+                GRAXEmbedSettings.debugInfo('loadFile Finished ' + responseTimeMS + ' MS');
+            } catch (Exception ex) {
+                GRAXEmbedSettings.debugInfo('error calling GRAX API : '  + ex.getMessage());
+                GRAXEmbedSettings.debugInfo('fullAPIPath: ' + fullAPIPath);
+            }
+        }
+        return fileContents;
+    }
+
     private HttpResponse apiCallOut(String httpMethod, String endpoint, String parameters, Boolean isRetry){
 		Http h = new Http();
 		HttpRequest req = new HttpRequest();

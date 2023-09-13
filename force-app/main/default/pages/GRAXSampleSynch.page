@@ -1,0 +1,61 @@
+<apex:page controller="GRAXSampleSynch" sidebar="true" showHeader="true">
+<apex:form >
+  <table>
+      <tr><th>Object Name</th><td><apex:inputtext value="{!objectname}"/></td></tr>
+      <tr><th>Remote Object ID</th><td><apex:inputtext value="{!remoteobjectid}"/></td></tr>
+      <tr><th>Local Object ID</th><td><apex:inputtext value="{!localobjectid}"/></td></tr>
+      <tr><td colspan="2"><apex:commandbutton value="click" action="{!show}" rerender="cdlmap1,filelist,cdFilemap1" /></td></tr>
+      <tr>
+        <td colspan="2">
+        <table>
+            <tr>
+                <td>
+                    <apex:outputlabel id="cdfilelist"> 
+                        <apex:pageBlock>
+                        <apex:pageBlockTable value="{!fileList}" var="recordIndex" id="cdFilemap1">
+                            <apex:column headerValue="id">
+                                {!recordIndex.id}
+                            </apex:column>
+                            <apex:column headerValue="Size">
+                                {!recordIndex.size}
+                            </apex:column>
+                            <apex:column headerValue="Name">
+                                {!recordIndex.name}
+                            </apex:column>
+                             <apex:column headerValue="URL">
+                                {!recordIndex.apiURL}
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        </apex:pageBlock>
+                    </apex:outputlabel>
+                </td>
+            </tr>
+            <!-- Additional Samples
+            <tr>
+                <td>
+                    <apex:outputlabel id="cdlist"> 
+                        <apex:pageBlock>
+                        <apex:pageBlockTable value="{!mapCDLToCD}" var="recordIndex" id="cdlmap1">
+                            <apex:column headerValue="ContentDocumentLink Id">
+                                {!recordIndex}
+                            </apex:column>
+                            <apex:column headerValue="ContentDocument Id">
+                                {!mapCDLToCD[recordIndex]}
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        </apex:pageBlock>
+                    </apex:outputlabel>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <apex:outputText value="{!filelistRaw}" id="filelist"/>
+                </td>
+            </tr>
+            -->
+        </table>
+        </td>
+    </tr>
+  </table>
+</apex:form>
+</apex:page>
