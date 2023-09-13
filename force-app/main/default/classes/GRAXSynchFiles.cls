@@ -8,7 +8,7 @@
  * Ver   Date         Author             Modification
  * 1.0   09-13-2023   product@grax.com   Initial Version
 **/
-public class GRAXSynchFiles extends GRAXEmbedAPIAccess{
+public with sharing class GRAXSynchFiles extends GRAXEmbedAPIAccess{
     public class filestruct{
         public string id {get;set;}
         public string name {get;set;}
