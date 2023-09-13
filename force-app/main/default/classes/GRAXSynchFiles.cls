@@ -8,7 +8,7 @@
  * Ver   Date         Author             Modification
  * 1.0   09-13-2023   product@grax.com   Initial Version
 **/
-public with sharing class GRAXSynchFiles extends GRAXEmbedAPIAccess{
+public class GRAXSynchFiles extends GRAXEmbedAPIAccess{
     public class filestruct{
         public string id {get;set;}
         public string name {get;set;}
@@ -33,8 +33,10 @@ public with sharing class GRAXSynchFiles extends GRAXEmbedAPIAccess{
     }
 
     public List<filestruct> SynchNow(){
-        this.fileList = getFileList(this.objectname,this.remoteparentid);
-        this.fileList = synchFiles(this.localparentid,fileList);
+        if (Schema.sObjectType.ContentDocumentLink.isCreateable() && Schema.sObjectType.ContentVersion.isCreateable()){
+            this.fileList = getFileList(this.objectname,this.remoteparentid);
+            this.fileList = synchFiles(this.localparentid,fileList);
+        }
         return this.fileList;
     }
 
