@@ -29,7 +29,7 @@
 - [Display Opportunity List](./force-app/main/default/pages/GRAXEmbedDisplayOppList.page) - Add to Account Detail Page
 - [Display Record](./force-app/main/default/pages/GRAXEmbedDisplayRecord.page) - Links from [Display Opportunity List](./force-app/main/default/pages/
 GRAXEmbedDisplayOppList.page)
-- [Synchronize Salesforce ContentDocuments](./force-app/main/default/pages/GRAXSampleSynch.page) - Use this tool to migrate ContentDocuments between Salesforce Orgs or within Same Org.
+- [Synchronize & Replicate Salesforce ContentDocuments](./force-app/main/default/pages/GRAXSampleSynch.page) - Use this tool to migrate ContentDocuments between Salesforce Orgs or within Same Org.
 
 ## Support + Feedback
 
