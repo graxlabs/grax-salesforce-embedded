@@ -76,6 +76,7 @@ public with sharing class GRAXEmbedUIHelper {
                         relatedRecordIDs.add(fieldDef.fValue);
                     }
                 }
+
                 // Get the names for all referenced records from salesforce
                 Map<String, String> nameMap = new Map<String, String>();
                 if (relatedRecordIDs.size() > 0) {
@@ -85,6 +86,7 @@ public with sharing class GRAXEmbedUIHelper {
                         nameMap.put(obj.Id, (String)obj.get('Name'));
                     }
                 }
+                
                 // Overwrite the labels for all impacted fields
                 for (String recordID : recordFieldDefsTemp.keySet()) {
                     // This first get is protected by being in a keySet loop
