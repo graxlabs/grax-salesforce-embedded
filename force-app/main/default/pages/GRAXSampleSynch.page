@@ -1,0 +1,47 @@
+<apex:page controller="GRAXSampleSynch" sidebar="true" showHeader="true">
+<apex:form >
+  <table>
+    <tr>
+        <td colspan="2">
+            <table>
+                <tr><th>Object Name</th><td><apex:inputtext value="{!objectname}"  style="width:400px"/></td></tr>
+                <tr><th>Remote Object ID</th><td><apex:inputtext value="{!remoteobjectid}"  style="width:400px" /></td></tr>
+                <tr><th>Local Object ID</th><td><apex:inputtext value="{!localobjectid}"  style="width:400px" /></td></tr>
+                <tr><td colspan="2"><apex:commandbutton value="click" action="{!show}"  style="width:400px" /></td></tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+        <table>
+            <tr>
+                <td>
+                    <apex:outputlabel id="cdfilelist"> 
+                        <apex:pageBlock>
+                        <apex:pageBlockTable value="{!fileList}" var="recordIndex" id="cdFilemap1">
+                            <apex:column headerValue="id">
+                                {!recordIndex.id}
+                            </apex:column>
+                            <apex:column headerValue="Size">
+                                {!recordIndex.size}
+                            </apex:column>
+                            <apex:column headerValue="Name">
+                                {!recordIndex.name}
+                            </apex:column>
+                            <apex:column headerValue="New Content Id">
+                                {!recordIndex.NewContentDocumentId}
+                            </apex:column>
+                             <apex:column headerValue="Remote URL">
+                                {!recordIndex.apiURL}
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        </apex:pageBlock>
+                    </apex:outputlabel>
+                </td>
+            </tr>
+        </table>
+        </td>
+    </tr>
+  </table>
+</apex:form>
+</apex:page>
