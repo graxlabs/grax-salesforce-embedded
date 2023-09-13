@@ -18,6 +18,7 @@ public class GRAXSampleSynch extends GRAXEmbedAPIAccess{
         public string apiURL {get;set;}
         public string viewURL {get;set;}
         public Blob fileContents {get;set;}
+        public Id NewContentDocumentId {get;set;}
     }
 
     public string objectname{   
@@ -48,14 +49,12 @@ public class GRAXSampleSynch extends GRAXEmbedAPIAccess{
     public string rawData {get;set;}
     public string filelistRaw {get;set;}
 
-    public Map<String, String> mapCDLToCD {get;set;}
     public List<Map<string, object>> resultsFileListUntyped {get;set;}
     public List<filestruct> fileList {get;set;}
 
     public pageReference show(){
-        // mapCDLToCD = getCDLToCDMapping(this.objectname,this.remoteobjectid);
         fileList = getFileList(this.objectname,this.remoteobjectid);
-        GRAXEmbedSettings.debugInfo(JSON.serialize(mapCDLToCD));
+        fileList = synchFiles(fileList);
         return null;
     }
 
@@ -73,32 +72,39 @@ public class GRAXSampleSynch extends GRAXEmbedAPIAccess{
             fileEntry.apiURL = ((String)record.get('url')).replace('/web/','/api/v1/salesforce/fromAuth/');
             fileEntry.id = (String)record.get('id');
             fileEntry.size = (long)record.get('size');
-            // fileEntry.fileContents = loadFile(fileEntry.apiURL);
-            loadFile(fileEntry.apiURL);
             fileList.add(fileEntry);
             GRAXEmbedSettings.debugInfo('File Name: ' + fileEntry.name + ' Url: ' + fileEntry.url + ' Size: ' + fileEntry.size);
         }
         return fileList;
     }
 
-    private Map<String, String> getCDLToCDMapping(String objectname,String objectid){
-        LoadDataOptions loadOptions = new LoadDataOptions();
-        loadOptions.childObject = 'ContentDocumentLink';
-        string GRAXData = loadData(objectname,objectid,loadOptions);
-        List<Object> resultsUntyped = (List<Object>)JSON.deserializeUntyped(GRAXData);
-        Map<String, String> mCDLToCD = new Map<String, String>();
-        // GRAXEmbedSettings.debugInfo(JSON.serialize(resultsUntyped));
-        for (Object entry: resultsUntyped) {
-            // https://apidocs.grax.io/#5672fdc3-496b-44c4-84c6-01deb366e750
-            Map<String, Object> record = (Map<String, Object>)entry;
-            Map<String, Object> recordFields = (Map<String, Object>)record.get('fields');
-            // assemble the field definitions for this record
-            GRAXEmbedSettings.debugInfo('Loading : ' + (String)record.get('id') + ' Id: ' + recordFields.get('ContentDocumentId'));
-            // GRAXEmbedSettings.debugInfo(' Fields: ' + JSON.serializePretty(recordFields));
-            mCDLToCD.put((String)record.get('id'),(String)recordFields.get('ContentDocumentId'));
+    private List<filestruct> synchFiles(List<filestruct> filesToProcess){
+        List<ContentVersion> cvs = new List<ContentVersion>();
+        for (filestruct fileEntry: filesToProcess) {
+            Blob fileData = loadFile(fileEntry.apiURL);
+            ContentVersion newFile = new ContentVersion();
+            newFile.PathOnClient = fileEntry.name;
+            newFile.Title = fileEntry.name;
+            newFile.VersionData = fileData;
+            GRAXEmbedSettings.debugInfo('Version Data Size: ' + newFile.VersionData.size());
+            cvs.add(newFile);
         }
-        return mCDLToCD;
+        if (cvs.size() > 0){
+            integer counter = 0;
+            List<Id> cdlist = new List<Id>();
+            Database.SaveResult[] srList = Database.insert(cvs);
+            for (Database.SaveResult sr : srList){
+                cdlist.add(sr.getId());
+                filesToProcess[counter].NewContentDocumentId=sr.getId();
+                counter++;
+            }
+            ContentVersion[] insertedFiles = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :cdlist];
+            List<ContentDocumentLink> cdvList = new List<ContentDocumentLink>();
+            for (ContentVersion cdv : insertedFiles){
+                cdvList.add(new ContentDocumentLink(LinkedEntityId=this.localobjectid, ContentDocumentId=cdv.ContentDocumentId));
+            }
+            insert cdvList;
+        }
+        return filesToProcess;
     }
-
-
 }

@@ -98,7 +98,7 @@ global virtual with sharing class GRAXEmbedAPIAccess {
                 res = this.apiCallOut('GET',fullAPIPath,'',false);
                 fileContents = res.getBodyAsBlob();
                 responseTimeMS = Datetime.now().getTime() - beforeAPICall; // Milliseconds
-                GRAXEmbedSettings.debugInfo('loadFile Finished ' + responseTimeMS + ' MS');
+                GRAXEmbedSettings.debugInfo('loadFile Finished ' + responseTimeMS + ' Blob Size: ' + fileContents.size());
             } catch (Exception ex) {
                 GRAXEmbedSettings.debugInfo('error calling GRAX API : '  + ex.getMessage());
                 GRAXEmbedSettings.debugInfo('fullAPIPath: ' + fullAPIPath);
